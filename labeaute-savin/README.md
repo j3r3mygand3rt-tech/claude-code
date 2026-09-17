@@ -86,6 +86,17 @@ assets/
 Das Icon-Sprite ist zusätzlich in jede HTML-Datei eingebettet. Das spart einen
 Ladevorgang und sorgt dafür, dass die Symbole auch ohne Webserver erscheinen.
 
+**Zum Ansehen bitte einen lokalen Server verwenden, nicht per Doppelklick öffnen.**
+Über `file://` blockieren Browser das Laden der eigenen Schriftdateien aus
+Sicherheitsgründen (CORS). Layout, Icons, Bilder und Skript funktionieren dann
+zwar, die Seite fällt aber auf Systemschriften zurück und sieht falsch aus.
+Ein Server genügt:
+
+```bash
+cd labeaute-savin
+python3 -m http.server 8000
+```
+
 Kopf- und Fußzeile sind in allen vier Dateien identisch. Bei vier Seiten ist das
 tragbar. Wer sie ändert, ändert sie in allen vier Dateien.
 
