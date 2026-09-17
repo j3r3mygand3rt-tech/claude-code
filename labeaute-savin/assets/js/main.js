@@ -116,7 +116,7 @@
   /* ----------------------------------------------------------------------
      3. Eingangsanimationen
      ---------------------------------------------------------------------- */
-  var revealTargets = document.querySelectorAll('[data-reveal], [data-reveal-group]');
+  var revealTargets = document.querySelectorAll('[data-reveal], [data-reveal-group], [data-sig]');
 
   if (reduceMotion || !('IntersectionObserver' in window)) {
     // Kein Beobachter oder Nutzer moechte keine Bewegung: sofort sichtbar
@@ -134,7 +134,9 @@
           observer.unobserve(entry.target);
         });
       },
-      { rootMargin: '0px 0px -12% 0px', threshold: 0.08 }
+      // Die Bildstrecken sind hoch. Ein kleiner Schwellenwert laesst sie
+      // beginnen, sobald der obere Rand im Blick ist, statt erst spaet.
+      { rootMargin: '0px 0px -10% 0px', threshold: 0.06 }
     );
 
     Array.prototype.forEach.call(revealTargets, function (el) {

@@ -18,6 +18,7 @@ dort vorhanden sind und bei uns fehlten.
 | Technik und Markenbelege | 2 von 4 | Abschnitt „Womit wir arbeiten": HydraFacial, IONTO-COMED, eigene Pflegelinie |
 | Häufige Fragen | 1 von 4 | Sechs Fragen, Antworten aus den bestehenden Inhalten |
 | Eigene Produktlinie sichtbar | 2 von 4 | Als eigener Block im Institutsteil und in „Womit wir arbeiten" |
+| Behandlungen mit grossem Bild | 4 von 4 | Abschnitt „Für die man wiederkommt": vier Bildstrecken |
 | Online-Buchung | 2 von 4 | Nicht umgesetzt, siehe Abschnitt 6 |
 | Vorher und Nachher | 2 von 4 | Nicht umgesetzt, siehe Abschnitt 6 |
 | Preisliste öffentlich | 0 von 4 | Vollständig, das ist hier ein Vorteil gegenüber allen vier |
@@ -48,6 +49,14 @@ Diese Fassung verzichtet vollständig darauf:
 | Bild in abgerundetem Rahmen | Bild bricht rechts aus dem Raster aus |
 | Farbiges Akzentwort | Kursivsatz als Betonung |
 
+**Die Signature-Strecke.** Ein Verzeichnis allein war für ein Kosmetikinstitut zu
+karg: Schönheit verkauft sich über Bilder. Vier Behandlungen bekommen deshalb je
+eine grosse Bildstrecke mit den Originalfotos und den Beschreibungstexten der
+bestehenden Seite. Das Bild läuft dabei im Wechsel links oder rechts bis an den
+Bildschirmrand, während der Text im Satzspiegel bleibt. Diese Asymmetrie ist der
+Unterschied zwischen einer Bildergalerie und einer gestalteten Seite. Das
+Verzeichnis darunter bleibt als vollständige Übersicht.
+
 **Schrift.** Bodoni Moda für Überschriften, Jost für Fließtext. Bodoni ist eine
 klassizistische Antiqua mit starkem Strichkontrast, wie sie im Modejournalismus
 seit zweihundert Jahren gesetzt wird. Sie wirkt in großen Graden, genau dort wird
@@ -61,9 +70,20 @@ Linie. Für Text steht `#8f5a57` mit 5,57:1. Der Ton wird sparsam eingesetzt: di
 Seite ist Tinte auf Papier, nicht rosa. Genau dieser Verzicht nimmt ihr den
 Pastellton, an dem generierte Beauty-Layouts erkennbar sind.
 
-**Bewegung.** Zurückhaltend. Inhalte fahren beim Erscheinen einmalig ein,
-Zustandswechsel dauern 180 bis 320 ms. `prefers-reduced-motion` schaltet jede
-Animation ab. Ohne JavaScript ist alles sofort sichtbar.
+**Bewegung.** Zurückhaltend und begründet. Die Kurven stammen aus der
+`animate`-Skill, nicht aus dem Bauch: `cubic-bezier(0.23, 1, 0.32, 1)` für
+Eingänge, `cubic-bezier(0.77, 0, 0.175, 1)` für Bewegung auf dem Schirm.
+Zustandswechsel dauern 180 bis 280 ms. Die Bildstrecken sind die eine Ausnahme:
+Dort setzt sich das Bild über 1100 ms von 1,07 auf 1,0, statt einzufliegen. Das
+ist eine Marketingseite, die ein Besucher einmal sieht, und die Skill erlaubt
+dafür längere Dauern als für Bedienelemente. Animiert werden ausschliesslich
+`transform` und `opacity`, damit die Grafikkarte rechnet.
+
+Der Hover auf den Bildstrecken ist auf echte Zeigegeräte begrenzt
+(`@media (hover: hover) and (pointer: fine)`), weil ein Tippen auf dem
+Touchscreen sonst einen Hover auslöst, der hängen bleibt. Bei
+`prefers-reduced-motion` bleibt die Einblendung, Verschiebung und Skalierung
+entfallen. Ohne JavaScript ist alles sofort sichtbar.
 
 ---
 
@@ -156,9 +176,13 @@ Gemessen in Chromium, erster Aufruf ohne Cache, lokaler Server.
 | HTML-Dokument | 147,7 KB | 49,8 KB | 47,8 KB |
 | CSS-Dateien | 12 | 1 | 1 |
 | JS-Dateien | 19 | 1 | 1 |
-| Anfragen mobil | mindestens 40 | 12 | **9** |
-| Übertragen mobil | nicht gemessen | 307 KB | **188 KB** |
-| First Contentful Paint | nicht gemessen | 148 ms | **120 ms** |
+| Anfragen erster Bildschirm | mindestens 40 | 12 | **10** |
+| Übertragen erster Bildschirm | nicht gemessen | 307 KB | **231 KB** |
+| First Contentful Paint | nicht gemessen | 148 ms | **124 ms** |
+
+Die vier Bildstrecken kosten beim ersten Bildschirm nichts: ihre Fotos sind
+`loading="lazy"` und werden erst beim Heranscrollen geholt. Wer die ganze
+Startseite durchscrollt, lädt insgesamt 534 KB für 14 Bilder.
 
 Die bestehende Seite wurde aus dem ausgelieferten HTML gezählt, nicht im Browser
 gemessen: Chromium in dieser Umgebung vertraut dem Proxy-Zertifikat nicht, und die
@@ -168,7 +192,14 @@ TLS-Prüfung abzuschalten wäre der falsche Weg für eine Zahl.
 
 - axe-core, WCAG 2.0/2.1 Stufe A und AA plus Best Practices: **0 Verstöße** auf allen
   vier Seiten, jeweils bei 390 px und 1440 px.
-- Kein horizontales Scrollen bei 320, 360, 390, 414, 600, 768, 1024, 1440 und 1920 px.
+- Kein horizontales Scrollen bei 320, 360, 390, 414, 600, 768, 860, 900, 1024, 1279,
+  1280, 1440, 1600, 1920 und 2560 px. Die Bildstrecken laufen absichtlich aus dem
+  Satzspiegel heraus, deshalb wurde hier besonders dicht um die Umbruchpunkte geprüft.
+- Sieben Geräteprofile in beiden Lagen, alle vier Seiten: 56 Aufrufe, überall
+  0 axe-Verstösse, kein Querscrollen, keine Konsolenfehler.
+- Alle Bilddateinamen sind kleingeschrieben. Gemischte Schreibweise fiel auf, weil
+  ein WebP-Verweis auf einem Linux-Server ins Leere lief, während er lokal
+  funktioniert hätte.
 - Keine Konsolenfehler, keine fehlgeschlagenen Anfragen, alle Bilder als WebP.
 - `web-quality-audit`: 0 Fehler. Die fünf Warnungen sind Fehlalarme: vier betreffen den
   SVG-Namespace `http://www.w3.org/2000/svg`, die fünfte ein Zitat im Datenschutztext,

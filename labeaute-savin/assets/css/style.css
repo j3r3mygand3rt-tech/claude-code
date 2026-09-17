@@ -84,10 +84,13 @@
   --shell: 1280px;
   --band: clamp(4.5rem, 10vw, 9rem);
 
-  --ease: cubic-bezier(0.2, 0.6, 0.3, 1);
+  /* Kurven aus der animate-Skill, nicht selbst gemischt. */
+  --ease: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   --fast: 180ms;
-  --mid: 320ms;
+  --mid: 280ms;
   --slow: 700ms;
+  --sig: 1100ms;
 
   --head-h: 58px;
 }
@@ -1784,3 +1787,205 @@ a.menu-row:hover .menu-row__name {
 /* Verweise mitten in einem Satz bleiben bewusst auf Zeilenhoehe. Ein
    aufgeblasenes Inline-Ziel wuerde den Zeilenabstand zerreissen, und
    WCAG 2.5.8 nimmt Inline-Verweise ausdruecklich aus. */
+
+
+/* --------------------------------------------------------------------------
+   23. Signature-Behandlungen
+   Vier grosse Bildstrecken im Wechsel. Das Bild laeuft jeweils bis an den
+   Bildschirmrand, der Text bleibt im Satzspiegel. Diese Asymmetrie ist der
+   Unterschied zwischen einer Bildergalerie und einer gestalteten Seite.
+   -------------------------------------------------------------------------- */
+.sig + .sig {
+  margin-top: clamp(4rem, 9vw, 8rem);
+}
+
+.sig__grid {
+  display: grid;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  align-items: center;
+}
+
+.sig__grid > * {
+  min-width: 0;
+}
+
+@media (min-width: 900px) {
+  .sig__grid {
+    grid-template-columns: minmax(0, 1.06fr) minmax(0, 0.94fr);
+    gap: clamp(2.5rem, 5vw, 5rem);
+  }
+
+  /* Bild an den linken Bildschirmrand ziehen, Text bleibt rechts im Raster */
+  .sig__media {
+    margin-left: calc(var(--gutter) * -1);
+  }
+
+  .sig--flip .sig__media {
+    order: 2;
+    margin-left: 0;
+    margin-right: calc(var(--gutter) * -1);
+  }
+
+  .sig--flip .sig__body {
+    order: 1;
+  }
+}
+
+/* Ab der Maximalbreite kommt der Aussenabstand des Satzspiegels hinzu */
+@media (min-width: 1280px) {
+  .sig__media {
+    margin-left: calc((100vw - var(--shell)) / -2 - var(--gutter));
+  }
+
+  .sig--flip .sig__media {
+    margin-left: 0;
+    margin-right: calc((100vw - var(--shell)) / -2 - var(--gutter));
+  }
+}
+
+.sig__frame {
+  overflow: hidden;
+}
+
+.sig__frame img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
+@media (min-width: 900px) {
+  .sig__frame img {
+    aspect-ratio: 5 / 6;
+  }
+}
+
+.sig__name {
+  font-size: var(--t-3);
+  margin-bottom: 1.25rem;
+}
+
+.sig__text {
+  max-width: 46ch;
+  color: var(--ink-2);
+}
+
+/* Preis und Dauer als Zeile mit Haarlinie, kein Etikett */
+.sig__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1.5rem;
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+}
+
+.sig__price {
+  font-family: var(--display);
+  font-size: var(--t-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.sig__dur {
+  font-size: var(--t--1);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.sig__cta {
+  margin-top: 1.75rem;
+}
+
+/* --- Bewegung -----------------------------------------------------------
+   Zweck: Erklaerung und Wirkung auf einer Marketingseite, die ein Besucher
+   einmal sieht. Die Skill erlaubt hier laengere Dauern als die 300ms der
+   Bedienoberflaeche. Nur transform und opacity, damit die GPU rechnet.
+   Das Bild startet leicht vergroessert und setzt sich, statt einzufliegen.
+   ----------------------------------------------------------------------- */
+.js .sig__frame img {
+  transform: scale(1.07);
+  transition: transform var(--sig) var(--ease);
+}
+
+.js .sig.is-in .sig__frame img {
+  transform: scale(1);
+}
+
+.js .sig__body > * {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity var(--slow) var(--ease), transform var(--slow) var(--ease);
+}
+
+.js .sig.is-in .sig__body > * {
+  opacity: 1;
+  transform: none;
+}
+
+.js .sig.is-in .sig__body > *:nth-child(1) { transition-delay: 90ms; }
+.js .sig.is-in .sig__body > *:nth-child(2) { transition-delay: 160ms; }
+.js .sig.is-in .sig__body > *:nth-child(3) { transition-delay: 230ms; }
+.js .sig.is-in .sig__body > *:nth-child(n + 4) { transition-delay: 300ms; }
+
+/* Nur fuer echte Zeigegeraete. Auf dem Touchscreen loest ein Tippen
+   sonst einen Hover aus, der dann haengen bleibt. */
+@media (hover: hover) and (pointer: fine) {
+  .sig__frame img {
+    will-change: transform;
+  }
+
+  .sig:hover .sig__frame img {
+    transform: scale(1.03);
+  }
+
+  .js .sig.is-in:hover .sig__frame img {
+    transform: scale(1.03);
+  }
+}
+
+/* Weniger Bewegung heisst sanfter, nicht gar nicht: die Einblendung
+   bleibt, die Verschiebung und die Skalierung entfallen. */
+@media (prefers-reduced-motion: reduce) {
+  .js .sig__frame img,
+  .js .sig.is-in .sig__frame img,
+  .js .sig:hover .sig__frame img {
+    transform: none;
+    transition: none;
+  }
+
+  .js .sig__body > * {
+    transform: none;
+    transition: opacity var(--mid) ease;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   24. Gutscheinband
+   -------------------------------------------------------------------------- */
+.voucher {
+  display: grid;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  align-items: center;
+}
+
+.voucher > * {
+  min-width: 0;
+}
+
+@media (min-width: 860px) {
+  .voucher {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  }
+}
+
+.voucher__media img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+.voucher h2 {
+  font-size: var(--t-3);
+  margin-bottom: 1rem;
+}
