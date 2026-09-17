@@ -1550,7 +1550,10 @@ a.menu-row:hover .menu-row__name {
   transform: translateY(0);
 }
 
-@media (min-width: 1024px) {
+/* Ab Tabletbreite traegt die Kopfzeile bereits Telefonnummer und
+   Termin-Schaltflaeche. Die Leiste unten waere dort nur eine Wiederholung
+   und nimmt Bildflaeche weg. Sie bleibt dem Telefon vorbehalten. */
+@media (min-width: 768px) {
   .dock {
     display: none;
   }
@@ -1578,7 +1581,7 @@ a.menu-row:hover .menu-row__name {
   background: var(--accent);
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 767px) {
   body.has-dock {
     padding-bottom: 3.5rem;
   }
@@ -1730,3 +1733,54 @@ a.menu-row:hover .menu-row__name {
     break-inside: avoid;
   }
 }
+
+/* --------------------------------------------------------------------------
+   22. Trefferflaechen auf Touchgeraeten
+   Die Zeilenhoehe eines Textlinks betraegt rund 23px. Fuer eine Telefonnummer,
+   die auf dem Handy der wichtigste Klick der Seite ist, ist das zu wenig.
+   Der negative Aussenabstand haelt das Satzbild unveraendert und vergroessert
+   nur die tastbare Flaeche.
+   -------------------------------------------------------------------------- */
+.hours-strip a,
+.def-list dd a {
+  display: inline-block;
+  padding-block: 0.6rem;
+  margin-block: -0.6rem;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.head__tel {
+  min-height: 44px;
+}
+
+.link {
+  min-height: 44px;
+  padding-block: 0.6rem;
+}
+
+/* Die Einwilligung wird ueber das umschliessende Label getroffen,
+   nicht ueber das 18px kleine Kaestchen allein. */
+.consent {
+  padding-block: 0.35rem;
+}
+
+/* Rechtslinks in der Fusszeile und die Telefonnummer im Vorspann sind
+   eigenstaendige Ziele, keine Verweise mitten im Satz. Sie bekommen
+   dieselbe vergroesserte Flaeche. */
+.foot__bottom nav a,
+.lede a[href^='tel:'] {
+  display: inline-block;
+  /* 0.7rem je Seite ergibt bei 22px Zeilenhoehe rund 45px Gesamthoehe.
+     Mit 0.6rem waeren es 41px und damit knapp unter der Schwelle. */
+  padding-block: 0.7rem;
+  margin-block: -0.55rem;
+}
+
+/* Verweise mitten in einem Satz bleiben bewusst auf Zeilenhoehe. Ein
+   aufgeblasenes Inline-Ziel wuerde den Zeilenabstand zerreissen, und
+   WCAG 2.5.8 nimmt Inline-Verweise ausdruecklich aus. */
