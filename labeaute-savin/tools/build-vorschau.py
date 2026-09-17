@@ -120,9 +120,53 @@ def main() -> int:
             "# Unveroeffentlichte Vorschau. Bitte nicht indexieren.\n"
             "User-agent: *\n"
             "Disallow: /\n", encoding="utf-8")
-        # Netlify wertet diese Kopfzeile aus und haelt Suchmaschinen zusaetzlich fern
+
+        # Netlify liest _headers, Apache und LiteSpeed lesen .htaccess.
+        # Beide beilegen, damit derselbe Ordner auf beiden Wegen sicher ist.
         (OUT / "_headers").write_text(
             "/*\n  X-Robots-Tag: noindex, nofollow\n", encoding="utf-8")
+
+        vorspann = """# ==========================================================================
+# VORSCHAU, NICHT DIE LIVEFASSUNG
+#
+# Diese Datei ergaenzt die Produktionskonfiguration um zwei Dinge, die nur
+# fuer eine unveroeffentlichte Vorschau gelten: Suchmaschinen werden
+# ausgesperrt, und ein Passwortschutz liegt vorbereitet bei.
+# ==========================================================================
+
+# --------------------------------------------------------------------------
+# Suchmaschinen aussperren
+# Zusaetzlich zur robots.txt und zum noindex im <head>. Die Kopfzeile wirkt
+# auch dann, wenn ein Crawler die robots.txt ignoriert.
+# --------------------------------------------------------------------------
+<IfModule mod_headers.c>
+  Header set X-Robots-Tag "noindex, nofollow, noarchive"
+</IfModule>
+
+# --------------------------------------------------------------------------
+# Passwortschutz, abgeschaltet
+#
+# Wer die Vorschau nur der Kundin zeigen will, schaltet die folgenden vier
+# Zeilen frei. Vorher im Hostinger-Panel unter "Passwortgeschuetzte
+# Verzeichnisse" einen Zugang anlegen, oder eine .htpasswd hochladen und
+# den absoluten Pfad unten eintragen. Ein relativer Pfad funktioniert nicht.
+# --------------------------------------------------------------------------
+# AuthType Basic
+# AuthName "Vorschau La Beaute de Savin"
+# AuthUserFile /home/BENUTZER/domains/IHRE-DOMAIN/.htpasswd
+# Require valid-user
+
+# ==========================================================================
+# Ab hier unveraendert die Produktionskonfiguration
+# ==========================================================================
+
+"""
+        prod = (ROOT / ".htaccess")
+        if prod.exists():
+            (OUT / ".htaccess").write_text(
+                vorspann + prod.read_text(encoding="utf-8"), encoding="utf-8")
+        else:
+            (OUT / ".htaccess").write_text(vorspann, encoding="utf-8")
 
     groesse = sum(f.stat().st_size for f in OUT.rglob("*") if f.is_file())
     print(f"Erzeugt in {OUT.name}/")
@@ -131,7 +175,7 @@ def main() -> int:
             1 for s2 in SEITEN
             if 'content="noindex, nofollow"' in (OUT / s2).read_text(encoding="utf-8"))
         print(f"  {n_noindex} von {len(SEITEN)} Seiten auf noindex gesetzt")
-        print("  robots.txt und _headers geschrieben")
+        print("  robots.txt, _headers und .htaccess geschrieben")
         print(f"  Stylesheet: {len(css) // 1024} KB, Schriften separat")
     else:
         print(f"  {n_fonts} Schriften eingebettet")

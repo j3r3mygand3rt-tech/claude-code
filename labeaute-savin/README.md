@@ -248,9 +248,31 @@ Die Seite ist statisch. Es genügt, den Ordner auf einen Webserver zu legen, es 
 keinen Build-Schritt und keine Datenbank. Geeignet sind jeder klassische Webspace,
 Netlify, Vercel oder GitHub Pages.
 
-Empfohlene Servereinstellungen: Auslieferung über HTTPS, Komprimierung mit gzip oder
-brotli für `.html`, `.css`, `.js` und `.svg`, lange Cache-Dauer für `assets/fonts` und
-`assets/img`.
+**Klassischer Webspace (Hostinger, All-Inkl, IONOS).** Die mitgelieferte `.htaccess`
+regelt HTTPS-Umleitung, Komprimierung, Cache-Dauern, Sicherheitskopfzeilen und die
+richtigen Dateitypen für `woff2` und `webp`. Jeder Block steht in einem
+`<IfModule>`-Rahmen: fehlt ein Modul, wird der Block übersprungen und die Seite
+läuft weiter. Auf Netlify oder GitHub Pages wird die Datei ignoriert und darf
+liegen bleiben.
+
+Ein Block ist bewusst auskommentiert: Adressen ohne `.html`. Das betrifft auch die
+`canonical`-Angaben und die interne Verlinkung. Nur den Server umzustellen würde
+bedeuten, dass jede Seite unter zwei Adressen erreichbar ist und `canonical` auf
+eine Adresse zeigt, die selbst weiterleitet. Wer saubere Adressen will, muss alle
+drei Stellen zusammen ändern.
+
+**Nicht getestet:** Die `.htaccess` wurde auf Klammerbilanz und Verschachtelung
+geprüft, aber nie von einem Apache oder LiteSpeed ausgeführt, weil in der
+Entwicklungsumgebung keiner verfügbar war. Nach dem Hochladen bitte einmal
+kontrollieren, dass die Seite lädt. Bei einem Fehler 500 ist fast immer ein
+einzelner Block schuld, den der Hoster nicht erlaubt; dann diesen auskommentieren.
+
+**Vorschau für die Kundin.** `python3 tools/build-vorschau.py --hosting` erzeugt
+`kundenvorschau/`. Dieser Ordner ist dreifach gegen Suchmaschinen abgesichert
+(`noindex` im Kopf jeder Seite, `robots.txt`, sowie `_headers` für Netlify und
+`X-Robots-Tag` in der `.htaccess` für Apache), damit der Entwurf nicht mit der
+echten Website der Kundin um dieselben Suchbegriffe konkurriert. Ein
+Passwortschutz liegt in der `.htaccess` auskommentiert bei.
 
 Lokal ansehen:
 
