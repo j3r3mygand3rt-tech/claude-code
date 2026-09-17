@@ -20,8 +20,8 @@
   /* ----------------------------------------------------------------------
      1. Kopfzeile: bekommt beim Scrollen eine Kante
      ---------------------------------------------------------------------- */
-  var header = document.querySelector('.site-header');
-  var actionBar = document.querySelector('.action-bar');
+  var header = document.querySelector('.site-head');
+  var dock = document.querySelector('.dock');
   var lastKnownY = 0;
   var ticking = false;
 
@@ -34,8 +34,8 @@
 
     // Die mobile Aktionsleiste erscheint erst, wenn der Hero-CTA
     // aus dem Blick ist. Vorher waere sie doppelt.
-    if (actionBar) {
-      actionBar.classList.toggle('is-visible', y > 420);
+    if (dock) {
+      dock.classList.toggle('is-visible', y > 420);
     }
 
     ticking = false;
@@ -53,23 +53,23 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  if (actionBar) {
-    document.body.classList.add('has-action-bar');
+  if (dock) {
+    document.body.classList.add('has-dock');
   }
 
   /* ----------------------------------------------------------------------
      2. Mobiles Menue
      ---------------------------------------------------------------------- */
   var navToggle = document.querySelector('.nav-toggle');
-  var mobileNav = document.getElementById('mobile-nav');
+  var drawer = document.getElementById('drawer');
   var scrollLockY = 0;
 
   function setMenu(open) {
-    if (!navToggle || !mobileNav) return;
+    if (!navToggle || !drawer) return;
 
     navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     navToggle.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
-    mobileNav.classList.toggle('is-open', open);
+    drawer.classList.toggle('is-open', open);
 
     if (open) {
       // Hintergrund festhalten, ohne die Scrollposition zu verlieren
@@ -89,8 +89,8 @@
     setMenu(navToggle.getAttribute('aria-expanded') !== 'true');
   });
 
-  if (mobileNav) {
-    mobileNav.addEventListener('click', function (e) {
+  if (drawer) {
+    drawer.addEventListener('click', function (e) {
       if (e.target.closest('a')) setMenu(false);
     });
   }
@@ -144,28 +144,51 @@
 
   /* ----------------------------------------------------------------------
      4. Aktiver Navigationspunkt beim Scrollen
+     Es wird der oberste gerade sichtbare Abschnitt markiert. Ist kein
+     Abschnitt im Blick, etwa ganz oben auf der Seite, wird die Markierung
+     entfernt, statt den zuletzt gesehenen Punkt stehen zu lassen.
      ---------------------------------------------------------------------- */
   var sections = document.querySelectorAll('main section[id]');
-  var navLinks = document.querySelectorAll('.nav__link[href^="#"]');
+  var navLinks = document.querySelectorAll('.nav a[href*="#"]');
 
   if (sections.length && navLinks.length && 'IntersectionObserver' in window) {
     var linkFor = {};
     Array.prototype.forEach.call(navLinks, function (link) {
-      linkFor[link.getAttribute('href').slice(1)] = link;
+      var hash = link.getAttribute('href').split('#')[1];
+      if (hash) linkFor[hash] = link;
+    });
+
+    var visible = [];
+
+    var paint = function () {
+      Array.prototype.forEach.call(navLinks, function (l) {
+        l.removeAttribute('aria-current');
+      });
+      if (!visible.length) return;
+      var link = linkFor[visible[0]];
+      if (link) link.setAttribute('aria-current', 'page');
+    };
+
+    var order = Array.prototype.map.call(sections, function (s) {
+      return s.id;
     });
 
     var spy = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
-          var link = linkFor[entry.target.id];
-          if (!link) return;
-          if (entry.isIntersecting) {
-            Array.prototype.forEach.call(navLinks, function (l) {
-              l.removeAttribute('aria-current');
-            });
-            link.setAttribute('aria-current', 'page');
+          var id = entry.target.id;
+          var at = visible.indexOf(id);
+          if (entry.isIntersecting && at === -1) {
+            visible.push(id);
+          } else if (!entry.isIntersecting && at !== -1) {
+            visible.splice(at, 1);
           }
         });
+        // In Dokumentreihenfolge sortieren, damit immer der oberste gewinnt
+        visible.sort(function (a, b) {
+          return order.indexOf(a) - order.indexOf(b);
+        });
+        paint();
       },
       { rootMargin: '-45% 0px -50% 0px' }
     );
@@ -184,7 +207,7 @@
   var form = document.querySelector('[data-contact-form]');
 
   if (form) {
-    var status = form.querySelector('.form__status');
+    var status = form.querySelector('.form-status');
 
     var showError = function (field, message) {
       var box = field.parentNode.querySelector('.field__error');

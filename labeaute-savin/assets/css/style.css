@@ -1,20 +1,34 @@
 /* ==========================================================================
-   La Beaute de Savin - Kosmetikinstitut Hamburg
-   Stylesheet. Handgeschrieben, keine Build-Kette, keine Abhaengigkeiten.
+   La Beaute de Savin, Kosmetikinstitut Hamburg
+   Redaktionelles Layout. Handgeschrieben, keine Build-Kette.
 
-   Farbherkunft: #c39391 (Rose) und #ac9f94 (Taupe) stammen aus der
-   bestehenden Website und bleiben als Markenkern erhalten. #c39391 erreicht
-   auf hellem Grund nur 2.66:1 und wird deshalb ausschliesslich als Flaeche
-   verwendet, nie als Textfarbe. Fuer Text dient --rose-deep (5.57:1).
+   Gestaltungsprinzip: Die Seite ordnet sich ueber Weissraum, Haarlinien und
+   Typografie, nicht ueber Karten. Deshalb gibt es hier bewusst keine
+   abgerundeten Ecken, keine Schlagschatten, keine Icon-Kreise und keine
+   Pillen-Buttons. Das sind die Merkmale, an denen Baukasten- und
+   KI-Layouts sofort erkennbar sind.
+
+   Farbherkunft: #c39391 stammt aus der bestehenden Website und bleibt der
+   Markenkern. Es erreicht auf hellem Grund nur 2.66:1 und dient deshalb
+   ausschliesslich als Flaeche oder Linie, nie als Textfarbe. Fuer Text
+   steht --accent (#8f5a57, 5.57:1). Der Ton wird sparsam eingesetzt:
+   die Seite ist Tinte auf Papier, nicht rosa.
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   1. Schriften (selbst gehostet, kein externer Request)
+   1. Schriften, selbst ausgeliefert
    -------------------------------------------------------------------------- */
 @font-face {
-  font-family: 'Marcellus';
-  src: url('../fonts/marcellus-400.woff2') format('woff2');
+  font-family: 'Bodoni Moda';
+  src: url('../fonts/bodonimoda-400.woff2') format('woff2');
   font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Bodoni Moda';
+  src: url('../fonts/bodonimoda-500.woff2') format('woff2');
+  font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
@@ -39,76 +53,53 @@
   font-style: normal;
   font-display: swap;
 }
-@font-face {
-  font-family: 'Jost';
-  src: url('../fonts/jost-600.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
 
 /* --------------------------------------------------------------------------
-   2. Design-Tokens
+   2. Tokens
    -------------------------------------------------------------------------- */
 :root {
-  /* Farbe */
-  --ink: #161922;
-  --ink-soft: #3c4049;
-  --muted: #5f646e;
+  --ink: #14161c;
+  --ink-2: #3a3e47;
+  --ink-3: #5d626c;
+  --accent: #8f5a57;
   --rose: #c39391;
-  --rose-deep: #8f5a57;
-  --rose-wash: #f6ebe9;
-  --taupe: #ac9f94;
-  --cream: #fbf8f6;
-  --sand: #f4efec;
+  --paper: #f7f4f0;
+  --paper-2: #efe9e3;
   --white: #ffffff;
-  --line: #e6dedb;
-  --line-strong: #d6cac5;
+  --rule: #d9d0c8;
+  --rule-soft: #e7e0d9;
 
-  /* Typografie */
-  --font-display: 'Marcellus', 'Iowan Old Style', Georgia, serif;
-  --font-body: 'Jost', 'Avenir Next', 'Segoe UI', system-ui, sans-serif;
+  --display: 'Bodoni Moda', 'Didot', 'Bodoni MT', Georgia, serif;
+  --body: 'Jost', 'Avenir Next', 'Segoe UI', system-ui, sans-serif;
 
-  /* Fliessende Groessen: skalieren stufenlos zwischen 360px und 1400px */
-  --step--1: clamp(0.83rem, 0.79rem + 0.17vw, 0.92rem);
-  --step-0: clamp(1rem, 0.95rem + 0.22vw, 1.13rem);
-  --step-1: clamp(1.2rem, 1.11rem + 0.4vw, 1.45rem);
-  --step-2: clamp(1.44rem, 1.28rem + 0.7vw, 1.9rem);
-  --step-3: clamp(1.73rem, 1.45rem + 1.2vw, 2.5rem);
-  --step-4: clamp(2.07rem, 1.6rem + 2vw, 3.3rem);
-  --step-5: clamp(2.49rem, 1.7rem + 3.4vw, 4.4rem);
+  --t--1: clamp(0.8rem, 0.77rem + 0.13vw, 0.875rem);
+  --t-0: clamp(0.98rem, 0.94rem + 0.18vw, 1.08rem);
+  --t-1: clamp(1.15rem, 1.07rem + 0.35vw, 1.35rem);
+  --t-2: clamp(1.4rem, 1.24rem + 0.7vw, 1.85rem);
+  --t-3: clamp(1.75rem, 1.45rem + 1.3vw, 2.65rem);
+  --t-4: clamp(2.2rem, 1.6rem + 2.6vw, 4rem);
+  --t-5: clamp(2.6rem, 1.6rem + 4.4vw, 5.6rem);
 
-  /* Raster und Rhythmus */
-  --gutter: clamp(1.25rem, 4vw, 2.5rem);
-  --shell: 1240px;
-  --section-y: clamp(4rem, 9vw, 7.5rem);
-  --radius-s: 4px;
-  --radius: 10px;
-  --radius-l: 18px;
+  --gutter: clamp(1.25rem, 5vw, 3.5rem);
+  --shell: 1280px;
+  --band: clamp(4.5rem, 10vw, 9rem);
 
-  /* Tiefe. Getoente Schatten statt neutralem Grau, passend zur warmen Palette */
-  --shadow-s: 0 1px 2px rgba(60, 40, 38, 0.05), 0 2px 8px rgba(60, 40, 38, 0.04);
-  --shadow-m: 0 2px 6px rgba(60, 40, 38, 0.06), 0 12px 28px rgba(60, 40, 38, 0.08);
-  --shadow-l: 0 4px 12px rgba(60, 40, 38, 0.07), 0 24px 56px rgba(60, 40, 38, 0.1);
+  --ease: cubic-bezier(0.2, 0.6, 0.3, 1);
+  --fast: 180ms;
+  --mid: 320ms;
+  --slow: 700ms;
 
-  /* Bewegung. Eine Kurve fuer Eingaenge, eine fuer Zustandswechsel. */
-  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
-  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-  --dur-fast: 160ms;
-  --dur: 280ms;
-  --dur-slow: 620ms;
-
-  --header-h: 62px;
+  --head-h: 58px;
 }
 
 @media (min-width: 1024px) {
   :root {
-    --header-h: 84px;
+    --head-h: 76px;
   }
 }
 
 /* --------------------------------------------------------------------------
-   3. Reset und Grundlagen
+   3. Grundlagen
    -------------------------------------------------------------------------- */
 *,
 *::before,
@@ -123,26 +114,23 @@
 html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
-  /* Anker landen unterhalb der fixierten Kopfzeile statt dahinter */
-  scroll-padding-top: calc(var(--header-h) + 1rem);
+  scroll-padding-top: calc(var(--head-h) + 1.5rem);
 }
 
 body {
-  background: var(--cream);
+  background: var(--paper);
   color: var(--ink);
-  font-family: var(--font-body);
-  font-size: var(--step-0);
+  font-family: var(--body);
+  font-size: var(--t-0);
   font-weight: 300;
-  line-height: 1.65;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
   overflow-x: hidden;
 }
 
 img,
 picture,
-svg,
-video {
+svg {
   display: block;
   max-width: 100%;
 }
@@ -151,17 +139,12 @@ img {
   height: auto;
 }
 
-/* Platzhalterfarbe nur fuer Fotos. Sie steht bewusst nicht auf jedem img:
-   das Logo ist freigestellt, und die Farbumkehr in der Fusszeile wuerde
-   eine solche Flaeche zu einem weissen Kasten aufhellen. */
 picture img {
-  background: var(--sand);
+  background: var(--paper-2);
 }
 
 a {
-  color: var(--rose-deep);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 3px;
+  color: inherit;
 }
 
 button,
@@ -176,13 +159,12 @@ h1,
 h2,
 h3,
 h4 {
-  font-family: var(--font-display);
+  font-family: var(--display);
   font-weight: 400;
-  line-height: 1.14;
-  letter-spacing: -0.005em;
+  line-height: 1.08;
+  /* Bodoni vertraegt enge Laufweite, davon lebt der redaktionelle Charakter */
+  letter-spacing: -0.015em;
   text-wrap: balance;
-  /* Deutsche Komposita werden lang. Ohne Umbruch schiebt ein Wort wie
-     "Verbraucherstreitbeilegung" die ganze Seite in die Breite. */
   overflow-wrap: break-word;
 }
 
@@ -196,20 +178,18 @@ ol {
   list-style: none;
 }
 
-/* Sichtbarer, markenkonformer Fokusring auf allen interaktiven Elementen */
 :focus-visible {
-  outline: 2px solid var(--rose-deep);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
-  border-radius: var(--radius-s);
 }
 
 ::selection {
-  background: var(--rose-wash);
+  background: var(--rose);
   color: var(--ink);
 }
 
 /* --------------------------------------------------------------------------
-   4. Hilfsklassen
+   4. Raster
    -------------------------------------------------------------------------- */
 .shell {
   width: 100%;
@@ -218,17 +198,25 @@ ol {
   padding-inline: var(--gutter);
 }
 
-.section {
-  padding-block: var(--section-y);
+.band {
+  padding-block: var(--band);
 }
 
-.section--sand {
-  background: var(--sand);
+.band--tight {
+  padding-block: calc(var(--band) * 0.6);
 }
 
-.section--ink {
+.band--paper2 {
+  background: var(--paper-2);
+}
+
+.band--ink {
   background: var(--ink);
-  color: var(--cream);
+  color: var(--paper);
+}
+
+.rule-top {
+  border-top: 1px solid var(--rule);
 }
 
 .visually-hidden {
@@ -245,18 +233,18 @@ ol {
 .skip-link {
   position: absolute;
   top: 0;
-  left: 50%;
+  left: 1rem;
   z-index: 200;
-  padding: 0.7rem 1.4rem;
+  padding: 0.7rem 1.2rem;
   background: var(--ink);
-  color: var(--white);
-  border-radius: 0 0 var(--radius) var(--radius);
-  transform: translate(-50%, -110%);
-  transition: transform var(--dur) var(--ease-out);
+  color: var(--paper);
+  text-decoration: none;
+  transform: translateY(-120%);
+  transition: transform var(--mid) var(--ease);
 }
 
 .skip-link:focus-visible {
-  transform: translate(-50%, 0);
+  transform: translateY(0);
 }
 
 .icon {
@@ -266,323 +254,292 @@ ol {
   flex: none;
 }
 
-/* Abschnittskopf: Augenbraue benennt das Thema im Klartext, ohne Nummerierung */
-.eyebrow {
+/* Kapitelmarke. Benennt das Thema im Klartext, keine Nummerierung. */
+.kicker {
   display: block;
-  margin-bottom: 0.9rem;
-  font-size: var(--step--1);
-  font-weight: 500;
-  letter-spacing: 0.14em;
+  margin-bottom: 1.5rem;
+  font-size: var(--t--1);
+  font-weight: 400;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--rose-deep);
+  color: var(--ink-3);
 }
 
-.section--ink .eyebrow {
+.band--ink .kicker {
   color: var(--rose);
 }
 
-.lede {
-  max-width: 62ch;
-  font-size: var(--step-1);
-  font-weight: 300;
-  color: var(--ink-soft);
+/* Der einzige wiederkehrende Zierstrich der Seite, bewusst sparsam. */
+.kicker::after {
+  content: '';
+  display: block;
+  width: 2.5rem;
+  margin-top: 0.75rem;
+  border-top: 1px solid var(--rose);
 }
 
-.section--ink .lede {
-  color: #d9d3cf;
+.lede {
+  max-width: 54ch;
+  font-size: var(--t-1);
+  font-weight: 300;
+  color: var(--ink-2);
+}
+
+.band--ink .lede {
+  color: #cfc7c1;
+}
+
+.prose {
+  max-width: 58ch;
+  color: var(--ink-2);
+}
+
+.prose p + p {
+  margin-top: 1.1rem;
 }
 
 /* --------------------------------------------------------------------------
-   5. Buttons
+   5. Buttons. Rechteckig, ohne Schatten. Der Hauptknopf ist eine Flaeche,
+      der Nebenweg nur ein unterstrichenes Wort.
    -------------------------------------------------------------------------- */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.55em;
-  min-height: 48px; /* Fingerfreundliche Trefferflaeche */
-  padding: 0.75rem 1.5rem;
-  border: 1px solid transparent;
-  border-radius: 999px;
-  font-size: var(--step--1);
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  text-decoration: none;
-  text-align: center;
-  cursor: pointer;
-  /* Kein Zeilenumbruch im CTA-Label, auch nicht auf schmalen Geraeten */
-  white-space: nowrap;
-  transition: background-color var(--dur-fast) var(--ease-out),
-    color var(--dur-fast) var(--ease-out),
-    border-color var(--dur-fast) var(--ease-out),
-    transform var(--dur-fast) var(--ease-out),
-    box-shadow var(--dur-fast) var(--ease-out);
-}
-
-.btn .icon {
-  font-size: 1.1em;
-  transition: transform var(--dur) var(--ease-out);
-}
-
-.btn--primary {
-  background: var(--rose-deep);
-  color: var(--white);
-  box-shadow: var(--shadow-s);
-}
-
-.btn--primary:hover {
-  background: #7d4e4b;
-  box-shadow: var(--shadow-m);
-}
-
-.btn--primary:hover .icon--arrow {
-  transform: translateX(3px);
-}
-
-.btn--ink {
+  gap: 0.6em;
+  min-height: 48px;
+  padding: 0.85rem 1.75rem;
+  border: 1px solid var(--ink);
   background: var(--ink);
+  color: var(--paper);
+  font-size: var(--t--1);
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--fast) var(--ease),
+    color var(--fast) var(--ease), border-color var(--fast) var(--ease);
+}
+
+.btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
   color: var(--white);
 }
 
-.btn--ink:hover {
-  background: #262a35;
-}
-
-.btn--ghost {
+.btn--outline {
   background: transparent;
-  border-color: var(--line-strong);
   color: var(--ink);
 }
 
-.btn--ghost:hover {
-  border-color: var(--rose-deep);
-  color: var(--rose-deep);
-  background: var(--white);
+.btn--outline:hover {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
 }
 
-.section--ink .btn--ghost {
-  border-color: rgba(251, 248, 246, 0.32);
-  color: var(--cream);
+.band--ink .btn--outline {
+  border-color: rgba(247, 244, 240, 0.4);
+  color: var(--paper);
 }
 
-.section--ink .btn--ghost:hover {
-  background: rgba(251, 248, 246, 0.08);
-  border-color: var(--cream);
-  color: var(--white);
+.band--ink .btn--outline:hover {
+  background: var(--paper);
+  border-color: var(--paper);
+  color: var(--ink);
 }
 
-.btn:active {
-  transform: translateY(1px);
-}
-
-.btn--wide {
+.btn--block {
   width: 100%;
 }
 
-@media (min-width: 560px) {
-  .btn--wide {
-    width: auto;
-  }
+/* Textlink mit Linie, statt eines zweiten Knopfes */
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding-block: 0.35rem;
+  font-size: var(--t--1);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  transition: border-color var(--fast) var(--ease), color var(--fast) var(--ease);
+}
+
+.link:hover {
+  border-bottom-color: var(--accent);
+  color: var(--accent);
+}
+
+.link .icon {
+  font-size: 0.9em;
+  transition: transform var(--mid) var(--ease);
+}
+
+.link:hover .icon {
+  transform: translateX(4px);
 }
 
 /* --------------------------------------------------------------------------
-   6. Kopfzeile. Zweistufig: Kontaktleiste oben, Navigation darunter.
-      Die Telefonnummer bleibt auf jeder Bildschirmgroesse sichtbar.
+   6. Kopfzeile
    -------------------------------------------------------------------------- */
-.topbar {
+.topline {
   display: none;
   background: var(--ink);
-  color: #cfc9c5;
-  font-size: 0.8rem;
-  letter-spacing: 0.02em;
+  color: #b6afa9;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
 }
 
 @media (min-width: 1024px) {
-  .topbar {
+  .topline {
     display: block;
-    /* Faehrt beim Scrollen ein. max-height statt display, damit der
-       Uebergang weich laeuft und nicht springt. */
-    max-height: 3rem;
+    max-height: 2.75rem;
     overflow: hidden;
-    transition: max-height var(--dur) var(--ease-in-out),
-      opacity var(--dur-fast) var(--ease-out);
+    transition: max-height var(--mid) var(--ease), opacity var(--fast) var(--ease);
   }
 
-  .site-header.is-stuck .topbar {
+  .site-head.is-stuck .topline {
     max-height: 0;
     opacity: 0;
   }
 }
 
-.topbar__inner {
+.topline__inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1.5rem;
-  min-height: 38px;
-  padding-block: 0.35rem;
+  gap: 2rem;
+  min-height: 2.75rem;
 }
 
-.topbar__group {
+.topline__group {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 2rem;
 }
 
-.topbar__item {
+.topline a,
+.topline span {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
-  color: #cfc9c5;
+  gap: 0.5rem;
+  color: #b6afa9;
   text-decoration: none;
-  transition: color var(--dur-fast) var(--ease-out);
+  transition: color var(--fast) var(--ease);
 }
 
-.topbar__item:hover {
+.topline a:hover {
   color: var(--white);
 }
 
-.topbar__item .icon {
-  font-size: 1.05em;
+.topline .icon {
   color: var(--rose);
 }
 
-.site-header {
+.site-head {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(251, 248, 246, 0.86);
-  backdrop-filter: blur(14px) saturate(1.4);
-  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  background: var(--paper);
   border-bottom: 1px solid transparent;
-  transition: border-color var(--dur) var(--ease-out),
-    box-shadow var(--dur) var(--ease-out),
-    background-color var(--dur) var(--ease-out);
+  transition: border-color var(--mid) var(--ease);
 }
 
-/* Fallback ohne backdrop-filter: deckende Flaeche statt milchiger Transparenz */
-@supports not (backdrop-filter: blur(4px)) {
-  .site-header {
-    background: var(--cream);
-  }
+.site-head.is-stuck {
+  border-bottom-color: var(--rule);
 }
 
-/* Erst beim Scrollen bekommt die Kopfzeile eine Kante. Vorher schwebt sie frei. */
-.site-header.is-stuck {
-  border-bottom-color: var(--line);
-  box-shadow: var(--shadow-s);
-}
-
-.header__inner {
+.head__inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  min-height: var(--header-h);
+  min-height: var(--head-h);
 }
 
 .brand {
-  display: inline-flex;
-  align-items: center;
   flex: none;
   text-decoration: none;
 }
 
 .brand img {
   width: auto;
-  height: 38px;
-  transition: height var(--dur) var(--ease-out);
+  height: 34px;
+  transition: height var(--mid) var(--ease);
 }
 
 @media (min-width: 1024px) {
   .brand img {
-    height: 54px;
+    height: 48px;
+  }
+
+  .site-head.is-stuck .brand img {
+    height: 38px;
   }
 }
 
-.site-header.is-stuck .brand img {
-  height: 34px;
-}
-
-@media (min-width: 1024px) {
-  .site-header.is-stuck .brand img {
-    height: 42px;
-  }
-}
-
-.header__actions {
+.head__actions {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
-/* Telefon-Button: auf Mobil nur Symbol, ab Tablet mit Nummer */
-.header__phone {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  min-width: 48px;
-  min-height: 48px;
-  padding: 0 0.9rem;
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  color: var(--ink);
-  font-size: var(--step--1);
-  font-weight: 500;
-  text-decoration: none;
-  transition: border-color var(--dur-fast) var(--ease-out),
-    color var(--dur-fast) var(--ease-out);
-}
-
-.header__phone:hover {
-  border-color: var(--rose-deep);
-  color: var(--rose-deep);
-}
-
-.header__phone .icon {
-  font-size: 1.15em;
-}
-
-.header__phone span {
+.head__tel {
   display: none;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--t--1);
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--fast) var(--ease);
 }
 
-@media (min-width: 560px) {
-  .header__phone span {
-    display: inline;
+.head__tel:hover {
+  border-bottom-color: var(--ink);
+}
+
+@media (min-width: 560px) and (max-width: 1023px) {
+  .head__tel {
+    display: inline-flex;
   }
 }
 
-@media (min-width: 1024px) {
-  /* Ab Desktop steht die Nummer bereits in der Topbar */
-  .header__phone {
-    display: none;
+.head__btn {
+  min-height: 44px;
+  padding: 0.65rem 1.25rem;
+}
+
+@media (max-width: 419px) {
+  .head__btn {
+    padding-inline: 0.85rem;
+    letter-spacing: 0.08em;
   }
 }
 
-/* --------------------------------------------------------------------------
-   7. Navigation
-   -------------------------------------------------------------------------- */
 .nav-toggle {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
   background: transparent;
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
+  border: 1px solid var(--rule);
   cursor: pointer;
-  transition: border-color var(--dur-fast) var(--ease-out);
+  transition: border-color var(--fast) var(--ease);
 }
 
 .nav-toggle:hover {
-  border-color: var(--rose-deep);
+  border-color: var(--ink);
 }
 
 .nav-toggle .icon {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
 }
 
 .nav-toggle .icon--close,
@@ -604,811 +561,719 @@ ol {
   display: none;
 }
 
-.nav__list {
-  display: flex;
-}
-
 @media (min-width: 1024px) {
   .nav {
     display: block;
   }
 
-  .nav__list {
+  .nav ul {
+    display: flex;
     align-items: center;
-    gap: 0.35rem;
+    gap: 2rem;
   }
 
-  .nav__link {
-    display: inline-block;
-    padding: 0.5rem 0.8rem;
-    color: var(--ink);
-    font-size: 0.92rem;
-    font-weight: 400;
-    letter-spacing: 0.02em;
-    text-decoration: none;
-    border-radius: var(--radius-s);
-    transition: color var(--dur-fast) var(--ease-out);
-  }
-
-  /* Unterstreichung waechst aus der Mitte, statt abrupt zu erscheinen */
-  .nav__link {
+  .nav a {
     position: relative;
+    display: inline-block;
+    padding-block: 0.4rem;
+    font-size: 0.86rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: color var(--fast) var(--ease);
   }
 
-  .nav__link::after {
+  .nav a::after {
     content: '';
     position: absolute;
-    left: 0.8rem;
-    right: 0.8rem;
-    bottom: 0.25rem;
-    height: 1px;
-    background: var(--rose-deep);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-top: 1px solid var(--accent);
     transform: scaleX(0);
-    transform-origin: center;
-    transition: transform var(--dur) var(--ease-out);
+    transform-origin: left;
+    transition: transform var(--mid) var(--ease);
   }
 
-  .nav__link:hover,
-  .nav__link[aria-current='page'] {
-    color: var(--rose-deep);
+  .nav a:hover,
+  .nav a[aria-current='page'] {
+    color: var(--accent);
   }
 
-  .nav__link:hover::after,
-  .nav__link[aria-current='page']::after {
+  .nav a:hover::after,
+  .nav a[aria-current='page']::after {
     transform: scaleX(1);
   }
 }
 
-/* Mobiles Menue: Vollflaeche unter der Kopfzeile */
-.mobile-nav {
+/* Mobiles Menue */
+.drawer {
   position: fixed;
-  inset: var(--header-h) 0 0;
+  inset: var(--head-h) 0 0;
   z-index: 99;
   display: flex;
   flex-direction: column;
-  padding: 1.5rem var(--gutter) 2.5rem;
-  background: var(--cream);
+  padding: 2rem var(--gutter) 2.5rem;
+  background: var(--paper);
   overflow-y: auto;
   overscroll-behavior: contain;
   visibility: hidden;
   opacity: 0;
-  transform: translateY(-8px);
-  transition: opacity var(--dur) var(--ease-out),
-    transform var(--dur) var(--ease-out),
-    visibility 0s linear var(--dur);
+  transition: opacity var(--mid) var(--ease), visibility 0s linear var(--mid);
 }
 
-.mobile-nav.is-open {
+.drawer.is-open {
   visibility: visible;
   opacity: 1;
-  transform: translateY(0);
   transition-delay: 0s;
 }
 
 @media (min-width: 1024px) {
-  .mobile-nav {
+  .drawer {
     display: none;
   }
 }
 
-.mobile-nav__list {
-  display: flex;
-  flex-direction: column;
-}
-
-.mobile-nav__link {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.95rem 0;
-  border-bottom: 1px solid var(--line);
-  color: var(--ink);
-  font-family: var(--font-display);
-  font-size: var(--step-1);
+.drawer nav a {
+  display: block;
+  padding-block: 1rem;
+  border-bottom: 1px solid var(--rule-soft);
+  font-family: var(--display);
+  font-size: var(--t-2);
   text-decoration: none;
 }
 
-.mobile-nav__link .icon {
-  font-size: 0.85em;
-  color: var(--rose-deep);
-}
-
-.mobile-nav__foot {
+.drawer__foot {
   margin-top: auto;
-  padding-top: 2rem;
+  padding-top: 2.5rem;
   display: grid;
-  gap: 0.75rem;
+  gap: 0.9rem;
 }
 
 /* --------------------------------------------------------------------------
-   8. Hero
+   7. Hero. Typografie fuehrt, das Bild laeuft rechts aus dem Raster heraus.
    -------------------------------------------------------------------------- */
 .hero {
-  position: relative;
-  background: var(--sand);
+  padding-top: clamp(2.5rem, 6vw, 5rem);
+  padding-bottom: clamp(3rem, 7vw, 5rem);
 }
 
 .hero__grid {
   display: grid;
-  gap: clamp(2rem, 5vw, 3.5rem);
-  align-items: center;
-  padding-block: clamp(2.5rem, 7vw, 5.5rem);
+  gap: clamp(2.5rem, 5vw, 4rem);
 }
 
-/* Rasterkinder duerfen unter ihre Inhaltsbreite schrumpfen. Ohne das
-   sprengt ein langes Wort die Spalte statt umzubrechen. */
 .hero__grid > * {
   min-width: 0;
 }
 
 @media (min-width: 900px) {
   .hero__grid {
-    /* Asymmetrisch: Text traegt mehr Gewicht als das Bild */
-    grid-template-columns: 1.05fr 0.95fr;
-    gap: clamp(2.5rem, 5vw, 4.5rem);
+    grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+    align-items: center;
   }
 }
 
-.hero__title {
-  font-size: var(--step-5);
-  margin-bottom: 1.25rem;
-  /* "Selbstbewusstsein" ist bei 320px breiter als die Spalte. Mit lang="de"
-     trennt der Browser nach deutschen Regeln, statt die Seite zu dehnen. */
+.hero h1 {
+  font-size: var(--t-5);
+  margin-bottom: 1.75rem;
   hyphens: auto;
 }
 
-.hero__title em {
-  font-style: normal;
-  color: var(--rose-deep);
+/* Der Akzent liegt auf einem einzigen Wort, kursiv statt farbig */
+.hero h1 em {
+  font-style: italic;
+  font-weight: 400;
 }
 
 .hero__text {
-  max-width: 48ch;
-  margin-bottom: 2rem;
-  font-size: var(--step-1);
-  color: var(--ink-soft);
+  max-width: 44ch;
+  margin-bottom: 2.25rem;
+  font-size: var(--t-1);
+  color: var(--ink-2);
 }
 
-.hero__actions {
+.hero__cta {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-bottom: 2rem;
+  align-items: center;
+  gap: 1.25rem 2rem;
 }
 
-/* Vertrauensmerkmale statt erfundener Bewertungszahlen */
-.hero__facts {
-  display: grid;
-  gap: 0.6rem;
-  padding-top: 1.75rem;
-  border-top: 1px solid var(--line-strong);
-}
-
-@media (min-width: 560px) {
-  .hero__facts {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.75rem 1.5rem;
+/* Bild bricht am rechten Rand aus dem Raster aus. Auf Mobil bleibt es drin. */
+@media (min-width: 900px) {
+  .hero__media {
+    margin-right: calc(var(--gutter) * -1);
   }
 }
 
-.hero__fact {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.6rem;
-  font-size: var(--step--1);
-  color: var(--ink-soft);
-}
-
-.hero__fact .icon {
-  margin-top: 0.3em;
-  font-size: 1.05em;
-  color: var(--rose-deep);
-}
-
-.hero__media {
-  position: relative;
+@media (min-width: 1440px) {
+  .hero__media {
+    margin-right: calc((100vw - var(--shell)) / -2 - var(--gutter));
+  }
 }
 
 .hero__media img {
   width: 100%;
   aspect-ratio: 4 / 5;
   object-fit: cover;
-  border-radius: var(--radius-l);
-  box-shadow: var(--shadow-l);
 }
 
 @media (min-width: 900px) {
   .hero__media img {
-    aspect-ratio: 3 / 4;
+    aspect-ratio: 5 / 6;
   }
 }
 
-/* Oeffnungszeiten-Karte, ueberlappt das Bild leicht */
-.hero__card {
-  position: relative;
-  margin: -3.25rem 1rem 0;
-  padding: 1.25rem 1.4rem;
-  background: var(--white);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-m);
+/* Oeffnungszeiten als Textzeile, nicht als schwebende Karte */
+.hours-strip {
+  display: grid;
+  gap: 1.75rem 2.5rem;
+  padding-top: 2rem;
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  border-top: 1px solid var(--rule);
+}
+
+@media (min-width: 700px) {
+  .hours-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.hours-strip h2 {
+  font-family: var(--body);
+  font-size: var(--t--1);
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 0.6rem;
+}
+
+.hours-strip p,
+.hours-strip a {
+  font-size: var(--t-0);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.hours-strip a:hover {
+  color: var(--accent);
+}
+
+.hours-strip small {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 0.82rem;
+  color: var(--ink-3);
+}
+
+/* --------------------------------------------------------------------------
+   8. Abschnittskopf
+   -------------------------------------------------------------------------- */
+.head-block {
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+.head-block h2 {
+  font-size: var(--t-4);
+  max-width: 18ch;
+}
+
+.head-block .lede {
+  margin-top: 1.5rem;
+}
+
+.head-block--split {
+  display: grid;
+  gap: 2rem;
 }
 
 @media (min-width: 900px) {
-  .hero__card {
-    position: absolute;
-    right: -1rem;
-    bottom: 1.75rem;
-    left: auto;
-    width: min(19rem, 78%);
-    margin: 0;
-  }
-}
-
-.hero__card h2 {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.6rem;
-  font-family: var(--font-body);
-  font-size: var(--step--1);
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.hero__card h2 .icon {
-  color: var(--rose-deep);
-}
-
-.hero__hours {
-  display: grid;
-  gap: 0.2rem;
-  font-size: var(--step--1);
-  color: var(--ink-soft);
-}
-
-.hero__hours div {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.hero__hours dt {
-  color: var(--muted);
-}
-
-.hero__hours dd {
-  margin: 0;
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
-}
-
-.hero__note {
-  margin-top: 0.75rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--line);
-  font-size: 0.8rem;
-  color: var(--muted);
-}
-
-/* --------------------------------------------------------------------------
-   9. Abschnittskoepfe
-   -------------------------------------------------------------------------- */
-.section__head {
-  max-width: 56rem;
-  margin-bottom: clamp(2.25rem, 5vw, 3.5rem);
-}
-
-.section__head h1,
-.section__head h2 {
-  font-size: var(--step-4);
-  margin-bottom: 1rem;
-}
-
-/* Kopf mit Aktion rechts. Zweispaltig und sauber ausgerichtet,
-   nicht als kleiner freistehender Absatz in der Ecke. */
-.section__head--split {
-  max-width: none;
-  display: grid;
-  gap: 1.5rem;
-}
-
-@media (min-width: 860px) {
-  .section__head--split {
-    grid-template-columns: minmax(0, 1fr) auto;
+  .head-block--split {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     align-items: end;
   }
+
+  .head-block--split h2 {
+    max-width: 14ch;
+  }
+
+  .head-block--split .lede {
+    margin-top: 0;
+    padding-bottom: 0.4rem;
+  }
 }
 
 /* --------------------------------------------------------------------------
-   10. Leistungen. Bento-Raster mit unterschiedlich gewichteten Karten,
-       bewusst kein Dreierblock aus identischen Kacheln.
+   9. Leistungsverzeichnis. Aufgebaut wie eine gedruckte Behandlungskarte:
+      Kategorie links, Zeilen rechts, getrennt durch eine einzige Haarlinie
+      unter jeder Zeile. Keine Kacheln, keine Symbole in Kreisen.
    -------------------------------------------------------------------------- */
-.services {
+.menu-group {
   display: grid;
-  gap: 1rem;
-  grid-template-columns: 1fr;
+  gap: 1.75rem;
+  padding-block: clamp(2rem, 4vw, 3.25rem);
+  border-top: 1px solid var(--rule);
 }
 
-@media (min-width: 640px) {
-  .services {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.1rem;
-  }
+/* Rasterkinder muessen unter ihre Inhaltsbreite schrumpfen duerfen,
+   sonst sprengt ein langer Behandlungsname die Spalte. */
+.menu-group > * {
+  min-width: 0;
 }
 
-@media (min-width: 1040px) {
-  .services {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: 1.25rem;
-  }
-
-  /* Die beiden Aushaengeschilder bekommen mehr Flaeche */
-  .service--feature {
-    grid-column: span 3;
-  }
-
-  .service--wide {
-    grid-column: span 2;
-  }
-
-  .service {
-    grid-column: span 2;
+@media (min-width: 900px) {
+  .menu-group {
+    grid-template-columns: minmax(0, 0.32fr) minmax(0, 0.68fr);
+    gap: clamp(2rem, 4vw, 4rem);
   }
 }
 
-.service {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  padding: 1.5rem;
-  background: var(--white);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
+.menu-group__aside h2,
+.menu-group__aside h3 {
+  font-size: var(--t-2);
+  margin-bottom: 0.6rem;
+}
+
+/* Auf der Preisseite traegt der Kicker bereits den Bereich, deshalb
+   sitzt die Ueberschrift dort direkt darunter ohne zusaetzlichen Abstand. */
+.menu-group__aside .kicker {
+  margin-bottom: 0.9rem;
+}
+
+.menu-group__aside p {
+  font-size: var(--t--1);
+  color: var(--ink-3);
+  max-width: 32ch;
+}
+
+@media (min-width: 900px) {
+  .menu-group__aside {
+    position: sticky;
+    top: calc(var(--head-h) + 2rem);
+    align-self: start;
+  }
+}
+
+.menu-row {
+  display: block;
+  padding-block: 1.25rem;
+  border-bottom: 1px solid var(--rule-soft);
   text-decoration: none;
-  color: inherit;
-  overflow: hidden;
-  transition: border-color var(--dur) var(--ease-out),
-    box-shadow var(--dur) var(--ease-out),
-    transform var(--dur) var(--ease-out);
+  transition: border-color var(--fast) var(--ease);
 }
 
-.service:hover {
-  border-color: var(--rose);
-  box-shadow: var(--shadow-m);
-  transform: translateY(-3px);
+.menu-row:first-child {
+  padding-top: 0;
 }
 
-.service__icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
-  margin-bottom: 1rem;
-  background: var(--rose-wash);
-  border-radius: 50%;
-  color: var(--rose-deep);
-  font-size: 1.35rem;
-  transition: background-color var(--dur) var(--ease-out);
+a.menu-row:hover {
+  border-bottom-color: var(--accent);
 }
 
-.service:hover .service__icon {
-  background: var(--rose);
-  color: var(--white);
-}
-
-.service__title {
-  font-size: var(--step-2);
-  margin-bottom: 0.5rem;
-}
-
-.service--feature .service__title {
-  font-size: var(--step-3);
-}
-
-.service__text {
-  font-size: var(--step--1);
-  color: var(--ink-soft);
-  margin-bottom: 1.25rem;
-}
-
-.service__foot {
+.menu-row__top {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
   gap: 1rem;
-  margin-top: auto;
-  padding-top: 1rem;
-  border-top: 1px solid var(--line);
+  /* Reicht die Zeile nicht, rutscht der Preis unter den Namen,
+     statt die Seite in die Breite zu ziehen. */
+  flex-wrap: wrap;
 }
 
-.service__price {
-  font-size: var(--step--1);
-  font-weight: 500;
-  color: var(--ink);
+/* Auf sehr schmalen Geraeten entfallen die Fuehrungspunkte. Sie sind
+   Zierde und wuerden bei umgebrochener Zeile ins Leere laufen. */
+@media (max-width: 480px) {
+  .menu-row__dots {
+    display: none;
+  }
+
+  .menu-row__top {
+    gap: 0.25rem 1rem;
+  }
+}
+
+.menu-row__name {
+  min-width: 0;
+  font-family: var(--display);
+  font-size: var(--t-1);
+  font-weight: 400;
+  overflow-wrap: break-word;
+  transition: color var(--fast) var(--ease);
+}
+
+a.menu-row:hover .menu-row__name {
+  color: var(--accent);
+}
+
+/* Fuehrungspunkte zwischen Name und Preis, wie auf einer Behandlungskarte */
+.menu-row__dots {
+  flex: 1;
+  min-width: 1.5rem;
+  height: 0;
+  margin-bottom: 0.32em;
+  border-bottom: 1px dotted var(--rule);
+}
+
+.menu-row__price {
+  flex: none;
+  font-size: var(--t-1);
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
-.service__price span {
-  color: var(--muted);
-  font-weight: 300;
+.menu-row__meta {
+  margin-top: 0.45rem;
+  font-size: var(--t--1);
+  color: var(--ink-3);
+  max-width: 64ch;
 }
 
-.service__more {
-  display: inline-flex;
+.menu-row__meta .dur {
+  color: var(--ink-2);
+}
+
+/* --------------------------------------------------------------------------
+   10. Zweispaltige Bloecke
+   -------------------------------------------------------------------------- */
+.duo {
+  display: grid;
+  gap: clamp(2.5rem, 5vw, 4.5rem);
   align-items: center;
-  gap: 0.4rem;
-  font-size: var(--step--1);
-  font-weight: 500;
-  color: var(--rose-deep);
 }
 
-.service__more .icon {
-  transition: transform var(--dur) var(--ease-out);
+.duo > * {
+  min-width: 0;
 }
 
-.service:hover .service__more .icon {
-  transform: translateX(3px);
+@media (min-width: 900px) {
+  .duo {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .duo--flip .duo__media {
+    order: -1;
+  }
 }
 
-.service__media {
-  margin: -1.5rem -1.5rem 1.25rem;
-}
-
-.service__media img {
+.duo__media img {
   width: 100%;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 4 / 5;
   object-fit: cover;
 }
 
-@media (min-width: 1040px) {
-  .service--feature .service__media img {
-    aspect-ratio: 16 / 9;
+@media (min-width: 900px) {
+  .duo__media img {
+    aspect-ratio: 1;
   }
 }
 
+.duo__body h2 {
+  font-size: var(--t-3);
+  margin-bottom: 1.25rem;
+}
+
+/* Aufzaehlung mit Haarlinie statt Hakensymbolen */
+.list-rule {
+  margin-top: 2rem;
+  border-top: 1px solid var(--rule);
+}
+
+.list-rule li {
+  padding-block: 0.85rem;
+  border-bottom: 1px solid var(--rule-soft);
+  font-size: var(--t--1);
+  color: var(--ink-2);
+}
+
 /* --------------------------------------------------------------------------
-   11. Zweispaltige Inhaltsbloecke (Studio, Team)
+   11. Zitat. Linksbuendig und gross, nicht mittig mit Anfuehrungsgrafik.
    -------------------------------------------------------------------------- */
-.split {
+.quote-duo {
   display: grid;
   gap: clamp(2rem, 5vw, 4rem);
   align-items: center;
 }
 
 @media (min-width: 900px) {
-  .split {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  /* Wechselnde Leserichtung, aber nie drei gleiche Bloecke hintereinander */
-  .split--reverse .split__media {
-    order: -1;
+  .quote-duo {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
   }
 }
 
-.split__media img {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-m);
+.pull blockquote {
+  font-family: var(--display);
+  font-size: var(--t-4);
+  font-style: italic;
+  line-height: 1.14;
+  margin-bottom: 1.5rem;
+  max-width: 18ch;
 }
 
-.split__body h2 {
-  font-size: var(--step-3);
-  margin-bottom: 1rem;
-}
-
-.split__body p + p {
-  margin-top: 1rem;
-}
-
-.checklist {
-  display: grid;
-  gap: 0.7rem;
-  margin: 1.75rem 0;
-}
-
-.checklist li {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.7rem;
-  font-size: var(--step--1);
-  color: var(--ink-soft);
-}
-
-.checklist .icon {
-  margin-top: 0.32em;
-  font-size: 1.05em;
-  color: var(--rose-deep);
-}
-
-/* --------------------------------------------------------------------------
-   12. Zitat
-   -------------------------------------------------------------------------- */
-.quote {
-  max-width: 44rem;
-  margin-inline: auto;
-  text-align: center;
-}
-
-.quote blockquote {
-  font-family: var(--font-display);
-  font-size: var(--step-3);
-  line-height: 1.3;
-  margin-bottom: 1.25rem;
-}
-
-.quote figcaption {
-  font-size: var(--step--1);
-  letter-spacing: 0.1em;
+.pull figcaption {
+  font-size: var(--t--1);
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--taupe);
+  color: var(--ink-3);
+}
+
+.band--ink .pull figcaption {
+  color: #a9a29c;
 }
 
 /* --------------------------------------------------------------------------
-   13. Preistabellen
+   12. Galerie. Ungleiche Spaltenbreiten und versetzte Hoehen,
+       damit kein gleichfoermiges Kachelraster entsteht.
    -------------------------------------------------------------------------- */
-.price-group + .price-group {
-  margin-top: clamp(2.5rem, 5vw, 4rem);
-}
-
-.price-group__title {
-  font-size: var(--step-2);
-  margin-bottom: 0.5rem;
-}
-
-.price-group__intro {
-  max-width: 58ch;
-  margin-bottom: 1.75rem;
-  font-size: var(--step--1);
-  color: var(--ink-soft);
-}
-
-.price-list {
+.strip {
   display: grid;
-  gap: 1rem;
-}
-
-@media (min-width: 760px) {
-  .price-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.1rem;
-  }
-}
-
-/* Karten statt Hairline-Tabelle: auf dem Handy lesbar, ohne Querscrollen */
-.price-item {
-  display: flex;
-  flex-direction: column;
-  padding: 1.25rem 1.35rem;
-  background: var(--white);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-}
-
-.price-item__head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 0.5rem;
-}
-
-.price-item__name {
-  font-family: var(--font-display);
-  font-size: var(--step-1);
-}
-
-.price-item__value {
-  flex: none;
-  font-weight: 600;
-  font-size: var(--step-1);
-  color: var(--rose-deep);
-  font-variant-numeric: tabular-nums;
-}
-
-.price-item__meta {
-  margin-bottom: 0.7rem;
-  font-size: 0.82rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--taupe);
-}
-
-.price-item__desc {
-  font-size: var(--step--1);
-  color: var(--ink-soft);
-}
-
-.price-item__steps {
-  margin-top: 0.85rem;
-  padding-top: 0.85rem;
-  border-top: 1px solid var(--line);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-}
-
-.price-item__steps li {
-  padding: 0.25rem 0.6rem;
-  background: var(--sand);
-  border-radius: 999px;
-  font-size: 0.78rem;
-  color: var(--muted);
-}
-
-/* Kompakte Zeilen fuer Zusatzleistungen */
-.extras {
-  display: grid;
-  gap: 0;
-  background: var(--white);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  overflow: hidden;
-}
-
-.extras li {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.85rem 1.25rem;
-  font-size: var(--step--1);
-}
-
-.extras li + li {
-  border-top: 1px solid var(--line);
-}
-
-.extras strong {
-  font-weight: 400;
-}
-
-.extras span {
-  flex: none;
-  font-weight: 500;
-  color: var(--rose-deep);
-  font-variant-numeric: tabular-nums;
-  text-align: right;
-}
-
-.price-note {
-  margin-top: 1.25rem;
-  font-size: 0.85rem;
-  color: var(--muted);
-}
-
-/* --------------------------------------------------------------------------
-   14. Galerie
-   -------------------------------------------------------------------------- */
-.gallery {
-  display: grid;
-  gap: 0.75rem;
+  gap: clamp(0.75rem, 2vw, 1.5rem);
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-@media (min-width: 760px) {
-  .gallery {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1rem;
+@media (min-width: 800px) {
+  .strip {
+    grid-template-columns: 1.3fr 0.85fr 1fr;
+    align-items: start;
   }
 
-  /* Erste Kachel doppelt so gross, bricht das gleichfoermige Raster auf */
-  .gallery li:first-child {
-    grid-column: span 2;
-    grid-row: span 2;
+  .strip li:nth-child(2) {
+    margin-top: clamp(2rem, 5vw, 4rem);
+  }
+
+  .strip li:nth-child(3) {
+    margin-top: clamp(1rem, 2vw, 2rem);
   }
 }
 
-.gallery img {
+.strip img {
   width: 100%;
-  height: 100%;
-  aspect-ratio: 1;
   object-fit: cover;
-  border-radius: var(--radius-s);
-  transition: transform var(--dur-slow) var(--ease-out);
 }
 
-@media (min-width: 760px) {
-  .gallery li:first-child img {
-    aspect-ratio: 1;
-  }
+.strip li:nth-child(1) img {
+  aspect-ratio: 3 / 4;
 }
 
-.gallery li {
-  overflow: hidden;
-  border-radius: var(--radius-s);
+.strip li:nth-child(2) img {
+  aspect-ratio: 1;
 }
 
-.gallery li:hover img {
-  transform: scale(1.04);
+.strip li:nth-child(3) img {
+  aspect-ratio: 4 / 5;
 }
 
 /* --------------------------------------------------------------------------
-   15. Kontakt
+   13. Technik und Partner
    -------------------------------------------------------------------------- */
-.contact {
+.facts {
   display: grid;
-  gap: clamp(2rem, 5vw, 3.5rem);
+  border-top: 1px solid var(--rule);
 }
 
-@media (min-width: 900px) {
-  .contact {
-    grid-template-columns: 0.95fr 1.05fr;
+@media (min-width: 760px) {
+  .facts {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
-.contact__details {
-  display: grid;
-  gap: 1.5rem;
-  align-content: start;
+.facts > div {
+  padding: clamp(1.5rem, 3vw, 2.25rem) 0;
+  border-bottom: 1px solid var(--rule-soft);
 }
 
-.contact__row {
+@media (min-width: 760px) {
+  .facts > div {
+    padding: clamp(1.75rem, 3vw, 2.5rem) clamp(1.5rem, 3vw, 2.5rem);
+    border-bottom: 0;
+    border-right: 1px solid var(--rule-soft);
+  }
+
+  .facts > div:first-child {
+    padding-left: 0;
+  }
+
+  .facts > div:last-child {
+    border-right: 0;
+    padding-right: 0;
+  }
+}
+
+.facts h3 {
+  font-size: var(--t-2);
+  margin-bottom: 0.6rem;
+}
+
+.facts p {
+  font-size: var(--t--1);
+  color: var(--ink-2);
+}
+
+/* --------------------------------------------------------------------------
+   14. Haeufige Fragen
+   -------------------------------------------------------------------------- */
+.faq {
+  border-top: 1px solid var(--rule);
+}
+
+.faq details {
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.faq summary {
   display: flex;
-  gap: 0.9rem;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-block: 1.25rem;
+  font-family: var(--display);
+  font-size: var(--t-1);
+  cursor: pointer;
+  list-style: none;
+  transition: color var(--fast) var(--ease);
 }
 
-.contact__row .icon {
-  margin-top: 0.25em;
-  font-size: 1.25rem;
-  color: var(--rose);
+.faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq summary:hover {
+  color: var(--accent);
+}
+
+/* Plus wird zu Minus, gezeichnet aus zwei Linien statt eines Icons */
+.faq .sign {
+  position: relative;
   flex: none;
+  width: 14px;
+  height: 14px;
+  margin-top: 0.45em;
 }
 
-.contact__row h3 {
-  font-family: var(--font-body);
-  font-size: 0.82rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--taupe);
-  margin-bottom: 0.2rem;
+.faq .sign::before,
+.faq .sign::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  border-top: 1px solid currentColor;
+  transition: transform var(--mid) var(--ease);
 }
 
-.contact__row a {
-  color: inherit;
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: border-color var(--dur-fast) var(--ease-out);
+.faq .sign::after {
+  transform: rotate(90deg);
 }
 
-.contact__row a:hover {
-  border-bottom-color: currentColor;
+.faq details[open] .sign::after {
+  transform: rotate(0deg);
 }
 
-.contact__row p,
-.contact__row a {
-  font-size: var(--step-1);
+.faq details > div {
+  padding-bottom: 1.5rem;
+  max-width: 64ch;
+  font-size: var(--t-0);
+  color: var(--ink-2);
 }
 
-/* Formular */
-.form {
-  padding: clamp(1.5rem, 4vw, 2.25rem);
-  background: var(--white);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-s);
+.faq details > div p + p {
+  margin-top: 0.8rem;
 }
 
-.section--ink .form {
-  border-color: rgba(251, 248, 246, 0.14);
-}
-
-.form__grid {
+/* --------------------------------------------------------------------------
+   15. Anfahrt
+   -------------------------------------------------------------------------- */
+.visit {
   display: grid;
-  gap: 1.1rem;
+  gap: clamp(2rem, 4vw, 3.5rem);
+}
+
+@media (min-width: 860px) {
+  .visit {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+.def-list {
+  border-top: 1px solid var(--rule);
+}
+
+.def-list > div {
+  display: grid;
+  gap: 0.25rem 2rem;
+  padding-block: 1.1rem;
+  border-bottom: 1px solid var(--rule-soft);
 }
 
 @media (min-width: 560px) {
-  .form__row-2 {
+  .def-list > div {
+    grid-template-columns: 9.5rem minmax(0, 1fr);
+  }
+}
+
+.def-list dt {
+  font-size: var(--t--1);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.def-list dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+.def-list dd a {
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  transition: border-color var(--fast) var(--ease), color var(--fast) var(--ease);
+}
+
+.def-list dd a:hover {
+  border-bottom-color: var(--accent);
+  color: var(--accent);
+}
+
+.band--ink .def-list {
+  border-top-color: rgba(247, 244, 240, 0.28);
+}
+
+.band--ink .def-list > div {
+  border-bottom-color: rgba(247, 244, 240, 0.14);
+}
+
+.band--ink .def-list dt {
+  color: #a9a29c;
+}
+
+.band--ink .def-list dd {
+  color: var(--paper);
+}
+
+.band--ink .def-list dd a {
+  border-bottom-color: rgba(247, 244, 240, 0.3);
+}
+
+.band--ink .def-list dd a:hover {
+  border-bottom-color: var(--rose);
+  color: var(--rose);
+}
+
+/* --------------------------------------------------------------------------
+   16. Formular. Unterstrichene Felder wie auf einem gedruckten Bogen,
+       kein umrandeter Kasten.
+   -------------------------------------------------------------------------- */
+.form-grid {
+  display: grid;
+  gap: 1.75rem;
+}
+
+@media (min-width: 560px) {
+  .form-row2 {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.1rem;
+    gap: 1.75rem;
   }
 }
 
@@ -1418,71 +1283,70 @@ ol {
 }
 
 .field label {
-  font-size: 0.82rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
+  font-size: var(--t--1);
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  /* 5.21:1 auf Weiss, erfuellt AA auch als kleiner Text */
-  color: var(--muted);
+  color: var(--ink-3);
 }
 
 .field .req {
-  color: var(--rose-deep);
+  color: var(--accent);
 }
 
 .field input,
 .field select,
 .field textarea {
   width: 100%;
-  min-height: 48px;
-  padding: 0.7rem 0.9rem;
-  background: var(--cream);
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius-s);
+  min-height: 46px;
+  padding: 0.6rem 0;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  border-radius: 0;
   color: var(--ink);
-  font-size: var(--step-0);
+  font-size: var(--t-0);
   font-weight: 300;
-  transition: border-color var(--dur-fast) var(--ease-out),
-    background-color var(--dur-fast) var(--ease-out),
-    box-shadow var(--dur-fast) var(--ease-out);
+  transition: border-color var(--fast) var(--ease);
 }
 
 .field textarea {
-  min-height: 7.5rem;
+  min-height: 6rem;
   resize: vertical;
+}
+
+.field select {
+  /* Eigener Pfeil, damit das Feld nicht wie ein Systemwidget wirkt */
+  appearance: none;
+  padding-right: 1.5rem;
+  background-image: linear-gradient(45deg, transparent 50%, var(--ink-3) 50%),
+    linear-gradient(135deg, var(--ink-3) 50%, transparent 50%);
+  background-position: right 0.55rem center, right 0.3rem center;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
 }
 
 .field input::placeholder,
 .field textarea::placeholder {
-  /* 5.21:1 auf --cream, damit auch der Platzhalter lesbar bleibt */
-  color: var(--muted);
+  color: var(--ink-3);
   opacity: 1;
-}
-
-.field input:hover,
-.field select:hover,
-.field textarea:hover {
-  border-color: var(--taupe);
 }
 
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
   outline: none;
-  background: var(--white);
-  border-color: var(--rose-deep);
-  box-shadow: 0 0 0 3px var(--rose-wash);
+  border-bottom-color: var(--accent);
 }
 
 .field input[aria-invalid='true'],
 .field textarea[aria-invalid='true'] {
-  border-color: #a8322c;
+  border-bottom-color: #9c2f28;
 }
 
 .field__error {
   display: none;
   font-size: 0.82rem;
-  color: #8c2a25;
+  color: #8a2a24;
 }
 
 .field__error.is-visible {
@@ -1492,157 +1356,183 @@ ol {
 .consent {
   display: flex;
   align-items: flex-start;
-  gap: 0.65rem;
-  font-size: 0.85rem;
-  color: var(--ink-soft);
+  gap: 0.7rem;
+  font-size: 0.86rem;
+  color: var(--ink-2);
 }
 
 .consent input {
-  width: 1.15rem;
+  width: 1.1rem;
+  height: 1.1rem;
   min-height: 0;
-  height: 1.15rem;
-  margin-top: 0.2rem;
+  margin-top: 0.3rem;
   padding: 0;
-  accent-color: var(--rose-deep);
+  border-bottom: 0;
+  accent-color: var(--accent);
   flex: none;
 }
 
-.form__status {
+.form-status {
   display: none;
-  align-items: flex-start;
   gap: 0.6rem;
-  padding: 0.9rem 1rem;
-  border-radius: var(--radius-s);
-  font-size: var(--step--1);
+  padding: 1rem 1.25rem;
+  border-left: 2px solid var(--accent);
+  background: var(--paper-2);
+  font-size: var(--t--1);
 }
 
-.form__status.is-visible {
+.form-status.is-visible {
   display: flex;
 }
 
-.form__status--ok {
-  background: #edf5ee;
-  color: #1f5130;
+.form-status .icon {
+  margin-top: 0.25em;
+  color: var(--accent);
 }
 
-.form__status--ok .icon {
-  color: #2c7a49;
-  margin-top: 0.2em;
+.band--ink .field label {
+  color: #a9a29c;
+}
+
+.band--ink .field input,
+.band--ink .field select,
+.band--ink .field textarea {
+  color: var(--paper);
+  border-bottom-color: rgba(247, 244, 240, 0.28);
+}
+
+.band--ink .field input::placeholder,
+.band--ink .field textarea::placeholder {
+  color: #a09a95;
+}
+
+.band--ink .field input:focus,
+.band--ink .field select:focus,
+.band--ink .field textarea:focus {
+  border-bottom-color: var(--rose);
+}
+
+.band--ink .consent {
+  color: #cfc7c1;
+}
+
+.band--ink .form-status {
+  background: rgba(247, 244, 240, 0.07);
+  border-left-color: var(--rose);
+  color: var(--paper);
+}
+
+.band--ink .form-status .icon {
+  color: var(--rose);
 }
 
 /* --------------------------------------------------------------------------
-   16. Fusszeile
+   17. Fusszeile
    -------------------------------------------------------------------------- */
-.site-footer {
+.site-foot {
   background: var(--ink);
-  color: #b9b3af;
-  padding-block: clamp(3rem, 6vw, 4.5rem) 2rem;
-  font-size: var(--step--1);
+  color: #a9a29c;
+  padding-block: clamp(3.5rem, 7vw, 5.5rem) 2rem;
+  font-size: var(--t--1);
 }
 
-.footer__grid {
+.foot__grid {
   display: grid;
   gap: 2.5rem;
-  padding-bottom: 2.5rem;
-  border-bottom: 1px solid rgba(251, 248, 246, 0.12);
+  padding-bottom: 3rem;
+  border-bottom: 1px solid rgba(247, 244, 240, 0.14);
 }
 
 @media (min-width: 760px) {
-  .footer__grid {
-    grid-template-columns: 1.4fr 1fr 1fr;
-    gap: 3rem;
+  .foot__grid {
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 3.5rem;
   }
 }
 
-.footer__brand img {
-  height: 52px;
+.foot__brand img {
+  height: 46px;
   width: auto;
-  margin-bottom: 1.1rem;
-  /* Das Logo ist dunkel gesetzt und braucht auf dunklem Grund eine Umkehr */
+  margin-bottom: 1.25rem;
   filter: brightness(0) invert(1);
-  opacity: 0.92;
+  opacity: 0.9;
 }
 
-.footer h3 {
-  margin-bottom: 1rem;
-  font-family: var(--font-body);
-  font-size: 0.82rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
+.site-foot h3 {
+  margin-bottom: 1.1rem;
+  font-family: var(--body);
+  font-size: var(--t--1);
+  font-weight: 400;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--cream);
+  color: var(--paper);
 }
 
-.footer__list {
+.foot__list {
   display: grid;
   gap: 0.6rem;
 }
 
-.footer__list a {
-  color: #b9b3af;
+.foot__list a {
+  color: #a9a29c;
   text-decoration: none;
-  transition: color var(--dur-fast) var(--ease-out);
+  transition: color var(--fast) var(--ease);
 }
 
-.footer__list a:hover {
+.foot__list a:hover {
   color: var(--white);
 }
 
-.footer__social {
+.foot__social {
   display: flex;
-  gap: 0.6rem;
-  margin-top: 1.25rem;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
 }
 
-.footer__social a {
+.foot__social a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 44px;
   height: 44px;
-  border: 1px solid rgba(251, 248, 246, 0.2);
-  border-radius: 50%;
-  color: var(--cream);
-  font-size: 1.2rem;
-  transition: background-color var(--dur-fast) var(--ease-out),
-    border-color var(--dur-fast) var(--ease-out);
+  color: var(--paper);
+  font-size: 1.15rem;
+  transition: color var(--fast) var(--ease);
 }
 
-.footer__social a:hover {
-  background: var(--rose-deep);
-  border-color: var(--rose-deep);
-  color: var(--white);
+.foot__social a:hover {
+  color: var(--rose);
 }
 
-.footer__bottom {
+.foot__bottom {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.6rem 1.5rem;
+  gap: 0.6rem 2rem;
   justify-content: space-between;
   padding-top: 1.75rem;
-  font-size: 0.82rem;
-  color: #8f8985;
+  font-size: 0.8rem;
+  color: #8b8580;
 }
 
-.footer__bottom nav {
+.foot__bottom nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.25rem;
+  gap: 1.5rem;
 }
 
-.footer__bottom a {
-  color: #8f8985;
+.foot__bottom a {
+  color: #8b8580;
   text-decoration: none;
 }
 
-.footer__bottom a:hover {
-  color: var(--cream);
+.foot__bottom a:hover {
+  color: var(--paper);
 }
 
 /* --------------------------------------------------------------------------
-   17. Mobile Aktionsleiste. Der Weg zur Buchung bleibt am Daumen.
+   18. Mobile Aktionsleiste
    -------------------------------------------------------------------------- */
-.action-bar {
+.dock {
   position: fixed;
   right: 0;
   bottom: 0;
@@ -1650,48 +1540,52 @@ ol {
   z-index: 95;
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: 0.6rem;
-  padding: 0.6rem var(--gutter);
-  /* Respektiert die Home-Indicator-Zone auf iPhones */
-  padding-bottom: calc(0.6rem + env(safe-area-inset-bottom, 0px));
-  background: rgba(251, 248, 246, 0.92);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-top: 1px solid var(--line);
+  background: var(--ink);
   transform: translateY(110%);
-  transition: transform var(--dur) var(--ease-out);
+  transition: transform var(--mid) var(--ease);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-.action-bar.is-visible {
+.dock.is-visible {
   transform: translateY(0);
 }
 
 @media (min-width: 1024px) {
-  .action-bar {
+  .dock {
     display: none;
   }
 }
 
-.action-bar .btn {
-  min-height: 46px;
+.dock a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: 52px;
+  padding: 0 1.25rem;
+  color: var(--paper);
+  font-size: var(--t--1);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
 }
 
-.action-bar__call {
-  width: 52px;
-  padding: 0;
+.dock a:first-child {
+  border-right: 1px solid rgba(247, 244, 240, 0.2);
 }
 
-/* Platz schaffen, damit die Leiste nichts verdeckt */
+.dock a:last-child {
+  background: var(--accent);
+}
+
 @media (max-width: 1023px) {
-  body.has-action-bar {
-    padding-bottom: 4.5rem;
+  body.has-dock {
+    padding-bottom: 3.5rem;
   }
 }
 
 /* --------------------------------------------------------------------------
-   18. Bewegung
-   Eingangsanimationen laufen nur einmal und nur, wenn der Nutzer
-   Bewegung nicht abbestellt hat. Ohne JavaScript bleibt alles sichtbar.
+   19. Bewegung
    -------------------------------------------------------------------------- */
 [data-reveal] {
   opacity: 1;
@@ -1699,25 +1593,19 @@ ol {
 
 .js [data-reveal] {
   opacity: 0;
-  transform: translateY(14px);
-  transition: opacity var(--dur-slow) var(--ease-out),
-    transform var(--dur-slow) var(--ease-out);
-  /* Nur die Eigenschaften andeuten, die sich wirklich aendern */
-  will-change: opacity, transform;
+  transform: translateY(16px);
+  transition: opacity var(--slow) var(--ease), transform var(--slow) var(--ease);
 }
 
 .js [data-reveal].is-in {
   opacity: 1;
   transform: none;
-  will-change: auto;
 }
 
-/* Gestaffelter Eingang fuer Kartenreihen */
 .js [data-reveal-group] > * {
   opacity: 0;
-  transform: translateY(14px);
-  transition: opacity var(--dur-slow) var(--ease-out),
-    transform var(--dur-slow) var(--ease-out);
+  transform: translateY(16px);
+  transition: opacity var(--slow) var(--ease), transform var(--slow) var(--ease);
 }
 
 .js [data-reveal-group].is-in > * {
@@ -1726,14 +1614,11 @@ ol {
 }
 
 .js [data-reveal-group].is-in > *:nth-child(1) { transition-delay: 0ms; }
-.js [data-reveal-group].is-in > *:nth-child(2) { transition-delay: 70ms; }
-.js [data-reveal-group].is-in > *:nth-child(3) { transition-delay: 140ms; }
-.js [data-reveal-group].is-in > *:nth-child(4) { transition-delay: 210ms; }
-.js [data-reveal-group].is-in > *:nth-child(5) { transition-delay: 280ms; }
-.js [data-reveal-group].is-in > *:nth-child(6) { transition-delay: 350ms; }
-.js [data-reveal-group].is-in > *:nth-child(n + 7) { transition-delay: 420ms; }
+.js [data-reveal-group].is-in > *:nth-child(2) { transition-delay: 80ms; }
+.js [data-reveal-group].is-in > *:nth-child(3) { transition-delay: 160ms; }
+.js [data-reveal-group].is-in > *:nth-child(4) { transition-delay: 240ms; }
+.js [data-reveal-group].is-in > *:nth-child(n + 5) { transition-delay: 320ms; }
 
-/* Nutzerwunsch schlaegt Designwunsch. Alles wird sofort sichtbar. */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -1745,7 +1630,6 @@ ol {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
   }
 
   .js [data-reveal],
@@ -1755,53 +1639,11 @@ ol {
   }
 }
 
-/* Milchglas kostet Leistung und stoert manche Nutzer. Dann deckend. */
-@media (prefers-reduced-transparency: reduce) {
-  .site-header,
-  .action-bar {
-    background: var(--cream);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-}
-
 /* --------------------------------------------------------------------------
-   19. Druck
-   -------------------------------------------------------------------------- */
-@media print {
-  .site-header,
-  .topbar,
-  .action-bar,
-  .mobile-nav,
-  .form,
-  .site-footer {
-    display: none !important;
-  }
-
-  body {
-    background: #fff;
-    color: #000;
-    font-size: 11pt;
-  }
-
-  .section {
-    padding-block: 1rem;
-    break-inside: avoid;
-  }
-
-  a[href^='http']::after {
-    content: ' (' attr(href) ')';
-    font-size: 9pt;
-    color: #555;
-  }
-}
-
-/* --------------------------------------------------------------------------
-   20. Rechtstexte. Schmale Spalte, damit lange Absaetze lesbar bleiben.
+   20. Rechtstexte
    -------------------------------------------------------------------------- */
 .legal {
   max-width: 68ch;
-  /* lang="de" steht im <html>, die Trennung folgt deutschen Regeln */
   hyphens: auto;
   overflow-wrap: break-word;
 }
@@ -1809,33 +1651,33 @@ ol {
 .legal h2 {
   margin-top: 2.5rem;
   margin-bottom: 0.75rem;
-  font-size: var(--step-2);
+  font-size: var(--t-2);
 }
 
 .legal h3 {
   margin-top: 1.75rem;
   margin-bottom: 0.5rem;
-  font-size: var(--step-1);
+  font-size: var(--t-1);
 }
 
 .legal h4 {
   margin-top: 1.25rem;
   margin-bottom: 0.4rem;
-  font-family: var(--font-body);
-  font-size: var(--step-0);
-  font-weight: 600;
+  font-family: var(--body);
+  font-size: var(--t-0);
+  font-weight: 500;
 }
 
 .legal p {
   margin-bottom: 1rem;
-  color: var(--ink-soft);
+  color: var(--ink-2);
 }
 
 .legal ul,
 .legal ol {
   margin-bottom: 1rem;
   padding-left: 1.25rem;
-  color: var(--ink-soft);
+  color: var(--ink-2);
 }
 
 .legal li {
@@ -1851,53 +1693,40 @@ ol {
   max-width: 68ch;
   margin-bottom: 2.5rem;
   padding: 1.1rem 1.35rem;
-  background: var(--rose-wash);
-  border-left: 3px solid var(--rose-deep);
-  border-radius: 0 var(--radius-s) var(--radius-s) 0;
-  font-size: var(--step--1);
-  color: var(--ink-soft);
+  background: var(--paper-2);
+  border-left: 2px solid var(--accent);
+  font-size: var(--t--1);
+  color: var(--ink-2);
 }
 
 .legal-note strong {
   display: block;
   margin-bottom: 0.3rem;
   color: var(--ink);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 /* --------------------------------------------------------------------------
-   21. Sehr schmale Geraete (ab 320px)
-   Logo, Telefon, CTA und Menuetaste passen dort nicht nebeneinander.
-   Der CTA bleibt erhalten, nur sein Label wird kuerzer.
+   21. Druck
    -------------------------------------------------------------------------- */
-.btn__short {
-  display: none;
-}
-
-@media (max-width: 400px) {
-  .header__actions .btn--primary {
-    padding-inline: 1rem;
+@media print {
+  .site-head,
+  .topline,
+  .dock,
+  .drawer,
+  .form-grid,
+  .site-foot {
+    display: none !important;
   }
 
-  .header__actions .btn__full {
-    display: none;
+  body {
+    background: #fff;
+    color: #000;
+    font-size: 11pt;
   }
 
-  .header__actions .btn__short {
-    display: inline;
-  }
-
-  .header__actions .btn--primary .icon--arrow {
-    display: none;
-  }
-
-  .header__phone {
-    min-width: 44px;
-    padding-inline: 0.6rem;
-  }
-
-  .nav-toggle {
-    width: 44px;
-    height: 44px;
+  .band {
+    padding-block: 1rem;
+    break-inside: avoid;
   }
 }
