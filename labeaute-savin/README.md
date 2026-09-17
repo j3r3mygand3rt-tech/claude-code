@@ -255,11 +255,34 @@ richtigen Dateitypen für `woff2` und `webp`. Jeder Block steht in einem
 läuft weiter. Auf Netlify oder GitHub Pages wird die Datei ignoriert und darf
 liegen bleiben.
 
-Ein Block ist bewusst auskommentiert: Adressen ohne `.html`. Das betrifft auch die
-`canonical`-Angaben und die interne Verlinkung. Nur den Server umzustellen würde
-bedeuten, dass jede Seite unter zwei Adressen erreichbar ist und `canonical` auf
-eine Adresse zeigt, die selbst weiterleitet. Wer saubere Adressen will, muss alle
-drei Stellen zusammen ändern.
+### Adressen ohne .html
+
+Die Seite läuft unter `/leistungen`, nicht unter `/leistungen.html`. Das betrifft
+vier Stellen, die zusammenpassen müssen:
+
+| Stelle | Zustand |
+| --- | --- |
+| `.htaccess` Abschnitt 7 | drei Regeln, Reihenfolge zählt |
+| `canonical` im `<head>` | zeigt auf die Adresse ohne Endung |
+| interne Verlinkung | relativ und ohne Endung, damit sie auch im Unterordner trägt |
+| Offline-Vorschau | der Build setzt die Endungen zurück, siehe unten |
+
+Die Regeln im Einzelnen: `/index` und `/index.html` werden dauerhaft auf `/`
+umgeleitet, damit die Startseite genau eine Adresse hat. Jede andere Adresse mit
+`.html` wird auf die Fassung ohne Endung umgeleitet, alte Lesezeichen bleiben also
+gültig. Intern zeigt `/leistungen` dann ohne sichtbare Umleitung auf
+`leistungen.html`.
+
+**Wo das funktioniert:** Apache und LiteSpeed über die `.htaccess`, und Netlify von
+sich aus. **Wo nicht:** GitHub Pages löst endungslose Adressen für einzelne
+HTML-Dateien nicht auf, dort führt `/leistungen` zu einem 404. Wer dorthin
+veröffentlichen will, muss entweder jede Seite in einen eigenen Ordner mit
+`index.html` legen oder Abschnitt 7 samt `canonical` und Verlinkung zurückdrehen.
+
+**Die Offline-Vorschau braucht die Endungen.** Über `file://` gibt es keinen
+Server, der die Zuordnung vornimmt. `tools/build-vorschau.py` übersetzt die
+Verweise deshalb zurück auf Dateinamen, 104 Stück über vier Seiten. Die
+Kundenvorschau für den Hoster lässt sie unverändert, weil dort ein Server steht.
 
 **Nicht getestet:** Die `.htaccess` wurde auf Klammerbilanz und Verschachtelung
 geprüft, aber nie von einem Apache oder LiteSpeed ausgeführt, weil in der

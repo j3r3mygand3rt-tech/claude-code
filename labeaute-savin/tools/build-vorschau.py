@@ -61,6 +61,29 @@ def schriften_einbetten(css: str, font_dir: Path) -> tuple[str, int]:
     return re.sub(r"url\('\.\./fonts/([^']+)'\)", ersetze, css), treffer
 
 
+def endungen_zurueck(html: str) -> tuple[str, int]:
+    """Macht die sauberen Adressen wieder zu Dateinamen.
+
+    Die Produktionsfassung verlinkt ohne Endung, /leistungen statt
+    /leistungen.html. Das setzt einen Server voraus, der die Zuordnung
+    vornimmt. Ueber file:// gibt es keinen, deshalb muessen die Verweise
+    fuer die Offline-Vorschau zurueckuebersetzt werden.
+    """
+    ersatz = [
+        ('href="./#', 'href="index.html#'),
+        ('href="./"', 'href="index.html"'),
+        ('href="leistungen#', 'href="leistungen.html#'),
+        ('href="leistungen"', 'href="leistungen.html"'),
+        ('href="impressum"', 'href="impressum.html"'),
+        ('href="datenschutz"', 'href="datenschutz.html"'),
+    ]
+    n = 0
+    for alt, neu in ersatz:
+        n += html.count(alt)
+        html = html.replace(alt, neu)
+    return html, n
+
+
 def preloads_entfernen(html: str) -> tuple[str, int]:
     """Entfernt die Schrift-Vorabrufe, die ueber file:// zwangsweise scheitern."""
     muster = r'[ \t]*<link rel="preload"[^>]*as="font"[^>]*>\n?'
@@ -106,13 +129,18 @@ def main() -> int:
     (OUT / "assets" / "css" / "style.css").write_text(css, encoding="utf-8")
 
     n_links = 0
+    n_pfade = 0
     for seite in SEITEN:
         html = (ROOT / seite).read_text(encoding="utf-8")
         if hosting:
+            # Netlify und die mitgelieferte .htaccess loesen /leistungen
+            # selbst auf, die Verweise bleiben also wie sie sind.
             html = suchmaschinen_aussperren(html)
         else:
             html, k = preloads_entfernen(html)
+            html, p = endungen_zurueck(html)
             n_links += k
+            n_pfade += p
         (OUT / seite).write_text(html, encoding="utf-8")
 
     if hosting:
@@ -180,6 +208,7 @@ def main() -> int:
     else:
         print(f"  {n_fonts} Schriften eingebettet")
         print(f"  {n_links} preload-Zeilen entfernt")
+        print(f"  {n_pfade} Verweise auf Dateinamen zurueckgesetzt")
         print(f"  Stylesheet: {len(css) // 1024} KB")
     print(f"  Gesamt:     {groesse / 1024 / 1024:.1f} MB")
     if hosting:

@@ -117,29 +117,33 @@ DirectoryIndex index.html
 Options -Indexes
 
 # --------------------------------------------------------------------------
-# 7. Adressen ohne .html, bewusst abgeschaltet
+# 7. Adressen ohne .html
 #
-# Der folgende Block macht aus /leistungen.html die Adresse /leistungen.
-# Das sieht aufgeraeumter aus, ist hier aber nicht eingeschaltet, weil es
-# drei Stellen betrifft, die zusammenpassen muessen:
+# /leistungen statt /leistungen.html. Drei Regeln, die Reihenfolge zaehlt:
+# erst die sichtbaren Umleitungen, danach die interne Zuordnung.
 #
-#   1. die canonical-Angaben im <head>, die derzeit auf .html zeigen
-#   2. die interne Verlinkung, die derzeit .html nutzt und sonst bei
-#      jedem Klick durch eine 301-Umleitung laufen wuerde
-#   3. die Sitemap, falls spaeter eine angelegt wird
-#
-# Nur den Server umzustellen wuerde bedeuten, dass jede Seite unter zwei
-# Adressen erreichbar ist und die canonical-Angabe auf eine Adresse zeigt,
-# die selbst weiterleitet. Wer saubere Adressen will, sagt Bescheid: dann
-# werden canonical und interne Links mitgezogen und dieser Block aktiv.
+# Die canonical-Angaben im <head> und die interne Verlinkung wurden
+# mitgezogen, beide zeigen jetzt ebenfalls auf die Adressen ohne Endung.
+# Wer diesen Block wieder abschaltet, muss beides zuruecknehmen, sonst
+# zeigen die Verweise ins Leere.
 # --------------------------------------------------------------------------
-# <IfModule mod_rewrite.c>
-#   RewriteEngine On
-#
-#   RewriteCond %{REQUEST_FILENAME} !-d
-#   RewriteCond %{REQUEST_FILENAME}\.html -f
-#   RewriteRule ^([^\.]+)$ $1.html [L]
-#
-#   RewriteCond %{THE_REQUEST} \s/+(.+)\.html[\s?] [NC]
-#   RewriteRule ^ /%1 [R=301,L]
-# </IfModule>
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # 7a. Die Startseite hat genau eine Adresse: /
+  # Ohne diese Regel waere sie unter /, /index und /index.html erreichbar.
+  RewriteCond %{THE_REQUEST} \s/+index(\.html)?[\s?] [NC]
+  RewriteRule ^ / [R=301,L]
+
+  # 7b. Wer eine Adresse mit .html aufruft, wird dauerhaft auf die Fassung
+  # ohne Endung geschickt. Alte Lesezeichen und Links bleiben gueltig.
+  RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?] [NC]
+  RewriteRule ^ /%1 [R=301,L]
+
+  # 7c. Intern zeigt /leistungen auf leistungen.html, ohne sichtbare
+  # Umleitung. Verzeichnisse und real vorhandene Dateien bleiben unberuehrt.
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+  RewriteRule ^([^/.]+)/?$ $1.html [L]
+</IfModule>
