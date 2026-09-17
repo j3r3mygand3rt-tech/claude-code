@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Dunkelblau wie die Kopfzeile, Blattmarke in Orange wie im Logo. -->
+  <rect width="64" height="64" rx="10" fill="#16212b"/>
+  <path d="M46 14c2 12-3.5 21-12.5 23.5-5 1.4-8.5-.5-9.5-4.5-1-4 1-7.5 6-10 5.5-2.7 11.5-5 16-9Z" fill="#ea9701"/>
+  <path d="M18 50c2-9 6.5-15.5 14-20.5" fill="none" stroke="#d1d7cd" stroke-width="4" stroke-linecap="round"/>
+</svg>
