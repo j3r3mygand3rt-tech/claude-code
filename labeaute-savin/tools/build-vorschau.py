@@ -1,7 +1,18 @@
 #!/usr/bin/env python3
 """
-Erzeugt aus den Produktionsdateien eine Vorschaufassung, die sich per
-Doppelklick oeffnen laesst, also ohne lokalen Webserver.
+Erzeugt aus den Produktionsdateien Vorschaufassungen.
+
+    python3 tools/build-vorschau.py            ->  vorschau/
+    python3 tools/build-vorschau.py --hosting  ->  kundenvorschau/
+
+vorschau/ ist fuer den eigenen Rechner gedacht und oeffnet sich per
+Doppelklick, also ohne lokalen Webserver.
+
+kundenvorschau/ ist fuer das Hochladen zu einem Hoster gedacht, etwa Netlify
+Drop, damit die Kundin einen Link bekommt. Dieser Ordner ist zusaetzlich
+gegen Suchmaschinen abgesichert: eine unveroeffentlichte Vorschau darf nicht
+im Index landen, sonst konkurriert der Entwurf mit der echten Website der
+Kundin um dieselben Suchbegriffe.
 
 Hintergrund: Ueber das Protokoll file:// behandelt der Browser jede Datei als
 eigenen Ursprung. Schriften unterliegen strengeren Regeln als Bilder und
@@ -56,37 +67,81 @@ def preloads_entfernen(html: str) -> tuple[str, int]:
     return re.sub(muster, "", html), len(re.findall(muster, html))
 
 
+def suchmaschinen_aussperren(html: str) -> str:
+    """Setzt jede Seite auf noindex, unabhaengig von ihrem bisherigen Wert."""
+    if re.search(r'<meta name="robots"[^>]*>', html):
+        return re.sub(r'<meta name="robots"[^>]*>',
+                      '<meta name="robots" content="noindex, nofollow">', html)
+    return html.replace('</head>',
+                        '<meta name="robots" content="noindex, nofollow">\n</head>', 1)
+
+
 def main() -> int:
+    hosting = "--hosting" in sys.argv
+    out = ROOT / ("kundenvorschau" if hosting else "vorschau")
+
+    global OUT
+    OUT = out
+
     if OUT.exists():
         shutil.rmtree(OUT)
     OUT.mkdir()
 
-    # Bilder und Symbole unveraendert uebernehmen, Schriften werden nicht mehr gebraucht
     shutil.copytree(ROOT / "assets" / "img", OUT / "assets" / "img")
     shutil.copytree(ROOT / "assets" / "icons", OUT / "assets" / "icons")
     (OUT / "assets" / "css").mkdir(parents=True)
-
-    css = (ROOT / "assets" / "css" / "style.css").read_text(encoding="utf-8")
-    css, n_fonts = schriften_einbetten(css, ROOT / "assets" / "fonts")
-    (OUT / "assets" / "css" / "style.css").write_text(css, encoding="utf-8")
-
     (OUT / "assets" / "js").mkdir()
     shutil.copy2(ROOT / "assets" / "js" / "main.js", OUT / "assets" / "js" / "main.js")
+
+    css = (ROOT / "assets" / "css" / "style.css").read_text(encoding="utf-8")
+    n_fonts = 0
+
+    if hosting:
+        # Auf einem echten Server werden die Schriften normal geladen und
+        # zwischengespeichert. Base64 im Stylesheet waere hier ein Nachteil.
+        shutil.copytree(ROOT / "assets" / "fonts", OUT / "assets" / "fonts")
+    else:
+        css, n_fonts = schriften_einbetten(css, ROOT / "assets" / "fonts")
+
+    (OUT / "assets" / "css" / "style.css").write_text(css, encoding="utf-8")
 
     n_links = 0
     for seite in SEITEN:
         html = (ROOT / seite).read_text(encoding="utf-8")
-        html, k = preloads_entfernen(html)
-        n_links += k
+        if hosting:
+            html = suchmaschinen_aussperren(html)
+        else:
+            html, k = preloads_entfernen(html)
+            n_links += k
         (OUT / seite).write_text(html, encoding="utf-8")
 
+    if hosting:
+        (OUT / "robots.txt").write_text(
+            "# Unveroeffentlichte Vorschau. Bitte nicht indexieren.\n"
+            "User-agent: *\n"
+            "Disallow: /\n", encoding="utf-8")
+        # Netlify wertet diese Kopfzeile aus und haelt Suchmaschinen zusaetzlich fern
+        (OUT / "_headers").write_text(
+            "/*\n  X-Robots-Tag: noindex, nofollow\n", encoding="utf-8")
+
     groesse = sum(f.stat().st_size for f in OUT.rglob("*") if f.is_file())
-    print(f"Vorschau erzeugt in {OUT}")
-    print(f"  {n_fonts} Schriften eingebettet")
-    print(f"  {n_links} preload-Zeilen entfernt")
-    print(f"  Stylesheet: {len(css) // 1024} KB")
+    print(f"Erzeugt in {OUT.name}/")
+    if hosting:
+        n_noindex = sum(
+            1 for s2 in SEITEN
+            if 'content="noindex, nofollow"' in (OUT / s2).read_text(encoding="utf-8"))
+        print(f"  {n_noindex} von {len(SEITEN)} Seiten auf noindex gesetzt")
+        print("  robots.txt und _headers geschrieben")
+        print(f"  Stylesheet: {len(css) // 1024} KB, Schriften separat")
+    else:
+        print(f"  {n_fonts} Schriften eingebettet")
+        print(f"  {n_links} preload-Zeilen entfernt")
+        print(f"  Stylesheet: {len(css) // 1024} KB")
     print(f"  Gesamt:     {groesse / 1024 / 1024:.1f} MB")
-    print("\nZum Ansehen: vorschau/index.html doppelklicken.")
+    if hosting:
+        print("\nOrdner oder ZIP auf https://app.netlify.com/drop ziehen.")
+    else:
+        print("\nZum Ansehen: vorschau/index.html doppelklicken.")
     return 0
 
 
