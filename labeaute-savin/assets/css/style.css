@@ -1751,6 +1751,14 @@ a.menu-row:hover .menu-row__name {
   margin-block: -0.6rem;
 }
 
+/* Die Kontaktleiste ist 44px hoch, ihre Verweise waren 21px. Nach
+   WCAG 2.5.8 genuegt das ueber die Abstandsregel, fuer eine
+   Telefonnummer ist es trotzdem zu wenig. Die Polsterung fuellt die
+   Leiste aus, ohne das Satzbild zu verschieben. */
+.topline a {
+  min-height: 2.5rem;
+}
+
 .brand {
   display: inline-flex;
   align-items: center;
