@@ -78,7 +78,7 @@ datenschutz.html    Datenschutzerklärung, Text übernommen, siehe Hinweis unten
 assets/
   css/style.css     Ein Stylesheet, nach Abschnitten gegliedert
   js/main.js        Ein Skript, ohne Abhängigkeiten
-  fonts/            7 woff2-Dateien, selbst gehostet
+  fonts/            5 woff2-Dateien, selbst gehostet
   img/              Originalbilder plus WebP-Varianten in 640/960/1280 px
   icons/sprite.svg  24 Symbole aus Phosphor Icons
 ```
@@ -86,7 +86,7 @@ assets/
 Das Icon-Sprite ist zusätzlich in jede HTML-Datei eingebettet. Das spart einen
 Ladevorgang und sorgt dafür, dass die Symbole auch ohne Webserver erscheinen.
 
-**Zum Ansehen bitte einen lokalen Server verwenden, nicht per Doppelklick öffnen.**
+**Zum Ansehen einen lokalen Server verwenden, nicht per Doppelklick öffnen.**
 Über `file://` blockieren Browser das Laden der eigenen Schriftdateien aus
 Sicherheitsgründen (CORS). Layout, Icons, Bilder und Skript funktionieren dann
 zwar, die Seite fällt aber auf Systemschriften zurück und sieht falsch aus.
@@ -96,6 +96,20 @@ Ein Server genügt:
 cd labeaute-savin
 python3 -m http.server 8000
 ```
+
+**Vorschaufassung ohne Server.** Wer die Seite ohne Terminal zeigen will, baut
+sich eine Fassung, in der die Schriften als Base64 im Stylesheet stecken:
+
+```bash
+python3 tools/build-vorschau.py
+```
+
+Das erzeugt den Ordner `vorschau/`, dessen `index.html` sich per Doppelklick
+öffnen lässt. Die Produktionsdateien bleiben unverändert. Der Ordner ist
+Wegwerfware und gehört nicht ins Repository, entsprechend steht er in der
+`.gitignore`. Für den Livegang immer die Dateien im Hauptordner verwenden:
+dort werden die Schriften separat geladen und vom Browser zwischengespeichert,
+statt bei jedem Seitenaufruf im 258 KB grossen Stylesheet mitzureisen.
 
 Kopf- und Fußzeile sind in allen vier Dateien identisch. Bei vier Seiten ist das
 tragbar. Wer sie ändert, ändert sie in allen vier Dateien.
