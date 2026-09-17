@@ -99,11 +99,21 @@ im Referenzprojekt real aufgetreten.
 ## Phase 4: Prüfen, ein Durchgang
 
 `scripts/pruefen.py` deckt in einem Lauf ab, was sonst über mehrere
-Runden verteilt gefunden wird:
+Runden verteilt gefunden wird. Der Pfad ist relativ zum Skill-Ordner, den
+Claude Code beim Laden als Basisverzeichnis nennt, nicht zum Projekt:
 
 ```bash
-python3 scripts/pruefen.py http://localhost:8000 --geraete
+# Server im Projektordner starten
+python3 -m http.server 8000 &
+
+# Prüfen, Pfad an das Basisverzeichnis der Skill anpassen
+python3 <skill-ordner>/scripts/pruefen.py http://localhost:8000 \
+        --geraete --quelle .
 ```
+
+`--geraete` ergänzt sieben Geräteprofile in beiden Lagen, `--quelle`
+schaltet die Strichprüfung im Quelltext dazu. Ohne Funde ist der
+Rückgabewert 0, sonst 1.
 
 Geprüft werden: axe-core über alle Seiten und Breiten, horizontales
 Scrollen von 320 bis 2560 px, Konsolenfehler, fehlgeschlagene Anfragen,
