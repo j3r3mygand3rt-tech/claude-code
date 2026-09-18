@@ -1,0 +1,1968 @@
+/* ==========================================================================
+   TOUGH GYM Hamburg, Boxen / Thaiboxen / Brazilian Jiu-Jitsu
+   Handgeschrieben, keine Build-Kette, keine Abhaengigkeit.
+
+   Warum die Seite dunkel ist: die Wortmarke ist weiss auf Transparenz, die
+   Halle ist ein dunkler Keller mit roten Matten und rotem Ring. Ein heller
+   Auftritt wuerde das Logo unbrauchbar machen und die Fotos verraten.
+   Das ist also keine Stilfrage, sondern eine Folge von Marke und Material.
+
+   Farben aus den Fotos gemessen, nicht geschaetzt: die Matten und Ringseile
+   liegen bei Farbton 348 bis 352 Grad. Daraus zwei Rot-Rollen, weil ein
+   einzelnes Rot beides nicht kann:
+
+     --rot       #c8102e  Flaeche. Weisse Schrift darauf: 5.88:1.
+                          Als Text auf Schwarz waere es 3.0:1, also unbrauchbar.
+     --rot-hell  #ff4b57  Text auf dunklem Grund: 5.91:1 auf --schwarz,
+                          5.45:1 auf --kohle, 4.77:1 auf --stein.
+                          Als Flaeche mit weisser Schrift waere es 3.7:1.
+
+   Weiss auf --schwarz erreicht 19.4:1, --grau 7.9:1.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Schrift, selbst ausgeliefert
+   Anton fuer die Schlagzeilen, weil eine schmale, schwere Grotesk die
+   Sprache von Kampfsportplakaten spricht. Barlow fuer alles andere.
+   -------------------------------------------------------------------------- */
+@font-face {
+  font-family: 'Anton';
+  src: url('../fonts/anton-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('../fonts/barlow-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('../fonts/barlow-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('../fonts/barlow-600.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('../fonts/barlow-700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* --------------------------------------------------------------------------
+   2. Tokens
+   -------------------------------------------------------------------------- */
+:root {
+  --schwarz: #0d0d0f;
+  --kohle: #17171a;
+  --stein: #232327;
+  --stein-hell: #2e2e33;
+  --linie: #33333a;
+  --linie-hell: #43434b;
+  --weiss: #ffffff;
+  --grau: #a5a5ad;
+  --grau-hell: #c4c4cb;
+  --rot: #c8102e;
+  --rot-dunkel: #a50d26;
+  --rot-hell: #ff4b57;
+  --hell: #f2f2f0;
+
+  --display: 'Anton', 'Arial Narrow', 'Haettenschweiler', sans-serif;
+  --text: 'Barlow', 'Segoe UI', system-ui, -apple-system, sans-serif;
+
+  --t--1: clamp(0.82rem, 0.8rem + 0.1vw, 0.88rem);
+  --t-0: clamp(1rem, 0.96rem + 0.18vw, 1.1rem);
+  --t-1: clamp(1.12rem, 1.05rem + 0.32vw, 1.32rem);
+  --t-2: clamp(1.45rem, 1.25rem + 0.9vw, 2.1rem);
+  --t-3: clamp(1.9rem, 1.45rem + 2vw, 3.2rem);
+  --t-4: clamp(2.4rem, 1.5rem + 4vw, 4.6rem);
+  --t-5: clamp(3rem, 1.4rem + 7vw, 7rem);
+
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --shell: 1280px;
+  --band: clamp(3.5rem, 7vw, 6.5rem);
+
+  /* Kurven aus der animate-Skill, nicht selbst gemischt */
+  --ease: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-hart: cubic-bezier(0.77, 0, 0.175, 1);
+  --schnell: 160ms;
+  --mittel: 280ms;
+  --lang: 620ms;
+
+  --kopf-h: 62px;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --kopf-h: 80px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   3. Grundlagen
+   -------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--kopf-h) + 1.5rem);
+  background: var(--schwarz);
+}
+
+body {
+  background: var(--schwarz);
+  color: var(--weiss);
+  font-family: var(--text);
+  font-size: var(--t-0);
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+/* Die Schlagzeilen sind gesperrt gesetzt und in Grossbuchstaben, so wie
+   die Wortmarke an der Hallenwand. */
+h1,
+h2,
+h3 {
+  font-family: var(--display);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+h4,
+h5 {
+  font-weight: 700;
+  line-height: 1.2;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* Deutsche Komposita werden lang. Ohne Umbruch schiebt ein Wort wie
+   "Wettkampfvorbereitung" in einer schmalen Spalte die Seite in die Breite. */
+p,
+li,
+dt,
+dd,
+figcaption,
+summary,
+blockquote {
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+:focus-visible {
+  outline: 3px solid var(--rot-hell);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--rot);
+  color: var(--weiss);
+}
+
+/* --------------------------------------------------------------------------
+   4. Raster
+   -------------------------------------------------------------------------- */
+.shell {
+  width: 100%;
+  max-width: var(--shell);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.shell--schmal {
+  max-width: 900px;
+}
+
+.band {
+  padding-block: var(--band);
+}
+
+.band--knapp {
+  padding-block: calc(var(--band) * 0.6);
+}
+
+.band--kohle {
+  background: var(--kohle);
+}
+
+.band--stein {
+  background: var(--stein);
+}
+
+/* Umkehrung: ein helles Band bricht die Dunkelheit auf, wo eine Tabelle
+   sonst schwer zu lesen waere. */
+.band--hell {
+  background: var(--hell);
+  color: var(--schwarz);
+}
+
+.band--hell .kicker {
+  color: var(--rot);
+}
+
+.band--hell .lede,
+.band--hell .prose {
+  color: #4a4a52;
+}
+
+.nur-screenreader {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.sprunglink {
+  position: absolute;
+  top: 0;
+  left: 1rem;
+  z-index: 200;
+  padding: 0.75rem 1.25rem;
+  background: var(--rot);
+  color: var(--weiss);
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-120%);
+  transition: transform var(--mittel) var(--ease);
+}
+
+.sprunglink:focus-visible {
+  transform: translateY(0);
+}
+
+.icon {
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+  flex: none;
+}
+
+/* Kapitelmarke mit rotem Balken davor, wie die Ecke eines Ringpfostens. */
+.kicker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.8rem;
+  margin-bottom: 1.1rem;
+  font-size: var(--t--1);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--rot-hell);
+}
+
+.kicker::before {
+  content: '';
+  width: 2.25rem;
+  height: 4px;
+  background: var(--rot);
+  flex: none;
+}
+
+.lede {
+  max-width: 58ch;
+  font-size: var(--t-1);
+  color: var(--grau-hell);
+}
+
+.prose {
+  max-width: 64ch;
+  color: var(--grau-hell);
+}
+
+.prose p + p {
+  margin-top: 1rem;
+}
+
+.prose strong {
+  color: var(--weiss);
+  font-weight: 600;
+}
+
+.band--hell .prose strong {
+  color: var(--schwarz);
+}
+
+/* --------------------------------------------------------------------------
+   5. Schaltflaechen
+   Rechteckig, kein abgerundetes Pillenformat. Das Rot traegt immer weisse
+   Schrift (5.88:1), nie umgekehrt.
+   -------------------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  min-height: 52px;
+  padding: 0.85rem 1.75rem;
+  border: 2px solid var(--rot);
+  background: var(--rot);
+  color: var(--weiss);
+  font-family: var(--display);
+  font-size: var(--t-0);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--schnell) var(--ease),
+    border-color var(--schnell) var(--ease), color var(--schnell) var(--ease);
+}
+
+.btn:hover {
+  background: var(--rot-dunkel);
+  border-color: var(--rot-dunkel);
+}
+
+.btn--linie {
+  background: transparent;
+  border-color: var(--linie-hell);
+  color: var(--weiss);
+}
+
+.btn--linie:hover {
+  background: var(--weiss);
+  border-color: var(--weiss);
+  color: var(--schwarz);
+}
+
+.band--hell .btn--linie {
+  border-color: #c9c9c4;
+  color: var(--schwarz);
+}
+
+.band--hell .btn--linie:hover {
+  background: var(--schwarz);
+  border-color: var(--schwarz);
+  color: var(--weiss);
+}
+
+.btn--voll {
+  width: 100%;
+}
+
+/* Fuer Beschriftungen, die auf einem schmalen Bildschirm nicht in eine
+   Zeile passen. Kurze Beschriftungen bleiben bei nowrap, damit eine
+   Telefonnummer nicht mitten im Block umbricht. */
+.btn--lang {
+  white-space: normal;
+  text-align: center;
+}
+
+.btn-reihe {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+
+.btn-reihe--mitte {
+  justify-content: center;
+}
+
+.btn-reihe--abstand {
+  margin-top: 2rem;
+}
+
+.btn-reihe--abstand-knapp {
+  margin-top: 1.75rem;
+}
+
+/* Textlink mit Pfeil */
+.pfeil-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  min-height: 44px;
+  font-size: var(--t--1);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--rot-hell);
+  transition: color var(--schnell) var(--ease);
+}
+
+.pfeil-link .icon {
+  transition: transform var(--mittel) var(--ease);
+}
+
+.pfeil-link:hover {
+  color: var(--weiss);
+}
+
+.pfeil-link:hover .icon {
+  transform: translateX(5px);
+}
+
+.band--hell .pfeil-link {
+  color: var(--rot);
+}
+
+.band--hell .pfeil-link:hover {
+  color: var(--schwarz);
+}
+
+/* --------------------------------------------------------------------------
+   6. Kopfzeile
+   -------------------------------------------------------------------------- */
+.kopf {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(13, 13, 15, 0.94);
+  border-bottom: 1px solid var(--linie);
+  backdrop-filter: blur(10px);
+}
+
+.kopf__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: var(--kopf-h);
+}
+
+.marke {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-height: 44px;
+  text-decoration: none;
+}
+
+.marke img {
+  width: auto;
+  height: 40px;
+  transition: height var(--mittel) var(--ease);
+}
+
+.marke__wort {
+  display: none;
+  font-family: var(--display);
+  font-size: 1.15rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.marke__wort small {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--text);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: var(--grau);
+}
+
+@media (min-width: 420px) {
+  .marke__wort {
+    display: block;
+  }
+}
+
+@media (min-width: 1024px) {
+  .marke img {
+    height: 52px;
+  }
+}
+
+.kopf__nav {
+  display: none;
+  margin-left: auto;
+}
+
+@media (min-width: 1100px) {
+  .kopf__nav {
+    display: block;
+  }
+}
+
+.kopf__nav ul {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.kopf__nav a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: 0.8rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--grau-hell);
+  transition: color var(--schnell) var(--ease);
+}
+
+.kopf__nav a::after {
+  content: '';
+  position: absolute;
+  left: 0.8rem;
+  right: 0.8rem;
+  bottom: 6px;
+  height: 3px;
+  background: var(--rot);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--mittel) var(--ease);
+}
+
+.kopf__nav a:hover,
+.kopf__nav a[aria-current='page'] {
+  color: var(--weiss);
+}
+
+.kopf__nav a:hover::after,
+.kopf__nav a[aria-current='page']::after {
+  transform: scaleX(1);
+}
+
+.kopf__aktionen {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.kopf__tel {
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding-inline: 0.5rem;
+  font-size: var(--t--1);
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--grau-hell);
+  transition: color var(--schnell) var(--ease);
+}
+
+.kopf__tel .icon {
+  color: var(--rot-hell);
+}
+
+.kopf__tel:hover {
+  color: var(--weiss);
+}
+
+@media (min-width: 680px) {
+  .kopf__tel {
+    display: inline-flex;
+  }
+}
+
+.kopf__btn {
+  min-height: 44px;
+  padding: 0.6rem 1.15rem;
+  font-size: 0.86rem;
+}
+
+@media (max-width: 460px) {
+  .kopf__btn {
+    padding-inline: 0.85rem;
+    letter-spacing: 0.04em;
+  }
+}
+
+.nav-schalter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--linie-hell);
+  color: var(--weiss);
+  cursor: pointer;
+  transition: border-color var(--schnell) var(--ease);
+}
+
+.nav-schalter:hover {
+  border-color: var(--rot);
+}
+
+.nav-schalter .icon {
+  font-size: 1.25rem;
+}
+
+.nav-schalter .icon--zu,
+.nav-schalter[aria-expanded='true'] .icon--menu {
+  display: none;
+}
+
+.nav-schalter[aria-expanded='true'] .icon--zu {
+  display: block;
+}
+
+@media (min-width: 1100px) {
+  .nav-schalter {
+    display: none;
+  }
+}
+
+/* Mobiles Menue */
+.schublade {
+  position: fixed;
+  inset: var(--kopf-h) 0 0;
+  z-index: 99;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem var(--gutter) 2.5rem;
+  background: var(--schwarz);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity var(--mittel) var(--ease), visibility 0s linear var(--mittel);
+}
+
+.schublade.ist-offen {
+  visibility: visible;
+  opacity: 1;
+  transition-delay: 0s;
+}
+
+@media (min-width: 1100px) {
+  .schublade {
+    display: none;
+  }
+}
+
+.schublade a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 58px;
+  padding-block: 0.9rem;
+  border-bottom: 1px solid var(--linie);
+  font-family: var(--display);
+  font-size: var(--t-2);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.schublade a .icon {
+  font-size: 0.55em;
+  color: var(--rot-hell);
+}
+
+.schublade__fuss {
+  margin-top: auto;
+  padding-top: 2rem;
+  display: grid;
+  gap: 0.7rem;
+}
+
+/* --------------------------------------------------------------------------
+   7. Hero
+   Ganzflaechiges Foto, darueber ein Verlauf, damit die Schrift auch dann
+   sicher lesbar bleibt, wenn das Bild an einer Stelle hell wird.
+   -------------------------------------------------------------------------- */
+.hero {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: clamp(560px, 88svh, 900px);
+  padding-block: clamp(3rem, 8vw, 6rem);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hero__bild {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+}
+
+.hero__bild img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+      to top,
+      rgba(13, 13, 15, 0.97) 0%,
+      rgba(13, 13, 15, 0.8) 38%,
+      rgba(13, 13, 15, 0.45) 70%,
+      rgba(13, 13, 15, 0.6) 100%
+    );
+}
+
+.hero__inhalt {
+  width: 100%;
+}
+
+.hero h1 {
+  font-size: var(--t-5);
+  margin-bottom: 1.25rem;
+  max-width: 16ch;
+}
+
+/* Ein einzelnes rotes Wort in der Schlagzeile, mehr Farbe braucht es nicht. */
+.rot {
+  color: var(--rot-hell);
+}
+
+.hero__text {
+  max-width: 48ch;
+  margin-bottom: 2rem;
+  font-size: var(--t-1);
+  color: var(--grau-hell);
+}
+
+/* Streifen unter dem Hero mit den belegten Eckdaten */
+.streifen {
+  display: grid;
+  gap: 1px;
+  background: var(--linie);
+  border-block: 1px solid var(--linie);
+}
+
+@media (min-width: 560px) {
+  .streifen {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 960px) {
+  .streifen {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.streifen > * {
+  min-width: 0;
+  padding: 1.5rem var(--gutter);
+  background: var(--schwarz);
+}
+
+@media (min-width: 960px) {
+  .streifen > * {
+    padding-inline: clamp(1.25rem, 2.5vw, 2rem);
+  }
+}
+
+.streifen__zahl {
+  display: block;
+  font-family: var(--display);
+  font-size: var(--t-3);
+  line-height: 1;
+  color: var(--weiss);
+}
+
+.streifen__wort {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: var(--t--1);
+  letter-spacing: 0.06em;
+  color: var(--grau);
+}
+
+/* --------------------------------------------------------------------------
+   8. Abschnittskopf
+   -------------------------------------------------------------------------- */
+.kopfblock {
+  margin-bottom: clamp(2rem, 4vw, 3.25rem);
+}
+
+.kopfblock h1,
+.kopfblock h2 {
+  font-size: var(--t-4);
+  max-width: 18ch;
+}
+
+.kopfblock .lede {
+  margin-top: 1.25rem;
+}
+
+.kopfblock--mitte {
+  max-width: 46rem;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.kopfblock--mitte .kicker {
+  justify-content: center;
+}
+
+.kopfblock--mitte h1,
+.kopfblock--mitte h2,
+.kopfblock--mitte .lede {
+  max-width: none;
+  margin-inline: auto;
+}
+
+.kopfblock--geteilt {
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 900px) {
+  .kopfblock--geteilt {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    align-items: end;
+  }
+
+  .kopfblock--geteilt h1,
+  .kopfblock--geteilt h2 {
+    max-width: 14ch;
+  }
+
+  .kopfblock--geteilt .lede {
+    margin-top: 0;
+    padding-bottom: 0.4rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   9. Kurskarten
+   Foto oben, darauf der Name. Kein Icon-Kreis, kein Schlagschatten,
+   keine abgerundete Ecke: das Gym ist ein Keller aus Beton.
+   -------------------------------------------------------------------------- */
+.karten {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 620px) {
+  .karten {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1040px) {
+  .karten--drei {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.karte {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: var(--kohle);
+  border: 1px solid var(--linie);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color var(--schnell) var(--ease),
+    transform var(--mittel) var(--ease);
+}
+
+.karte:hover {
+  border-color: var(--rot);
+  transform: translateY(-4px);
+}
+
+.karte__bild {
+  position: relative;
+  overflow: hidden;
+}
+
+.karte__bild img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+.karte__bild::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(13, 13, 15, 0.9), rgba(13, 13, 15, 0) 60%);
+}
+
+.karte__titel {
+  position: absolute;
+  left: 1.25rem;
+  right: 1.25rem;
+  bottom: 0.9rem;
+  z-index: 1;
+  font-size: var(--t-2);
+  color: var(--weiss);
+}
+
+.karte__koerper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 1.25rem 1.35rem 1.15rem;
+}
+
+.karte__text {
+  flex: 1;
+  margin-bottom: 1.1rem;
+  font-size: var(--t--1);
+  color: var(--grau-hell);
+}
+
+.karte__zeiten {
+  margin-bottom: 1.1rem;
+  font-size: var(--t--1);
+  color: var(--grau);
+}
+
+.karte__zeiten strong {
+  display: block;
+  margin-bottom: 0.2rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rot-hell);
+}
+
+/* --------------------------------------------------------------------------
+   10. Zweispaltige Bloecke
+   -------------------------------------------------------------------------- */
+.duo {
+  display: grid;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  align-items: center;
+}
+
+.duo > * {
+  min-width: 0;
+}
+
+@media (min-width: 900px) {
+  .duo {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .duo--gedreht .duo__bild {
+    order: -1;
+  }
+}
+
+.duo__bild img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.duo__koerper h2 {
+  font-size: var(--t-3);
+  margin-bottom: 1.25rem;
+}
+
+.duo__koerper h3 {
+  font-size: var(--t-2);
+  margin-bottom: 1rem;
+}
+
+/* Aufzaehlung mit rotem Haken */
+.hakenliste {
+  display: grid;
+  gap: 0.85rem;
+  margin-top: 1.75rem;
+}
+
+.hakenliste li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: var(--t--1);
+  color: var(--grau-hell);
+}
+
+.hakenliste .icon {
+  margin-top: 0.3em;
+  font-size: 1.05em;
+  color: var(--rot-hell);
+}
+
+.band--hell .hakenliste li {
+  color: #4a4a52;
+}
+
+.band--hell .hakenliste .icon {
+  color: var(--rot);
+}
+
+/* --------------------------------------------------------------------------
+   11. Meistertafel
+   Der Titelblock eines Trainers. Rote Kante links, Titel als Liste mit
+   Jahr und Gewichtsklasse, damit die Angaben pruefbar bleiben.
+   -------------------------------------------------------------------------- */
+.meister {
+  display: grid;
+  gap: clamp(1.75rem, 4vw, 3rem);
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .meister {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  }
+}
+
+.meister > * {
+  min-width: 0;
+}
+
+.meister__bild img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+.meister h2 {
+  font-size: var(--t-3);
+  margin-bottom: 1.25rem;
+}
+
+.titel-liste {
+  display: grid;
+  margin-top: 1.75rem;
+  border-top: 1px solid var(--linie);
+}
+
+.titel-liste li {
+  display: grid;
+  gap: 0.1rem 1.5rem;
+  padding-block: 0.85rem;
+  border-bottom: 1px solid var(--linie);
+}
+
+@media (min-width: 520px) {
+  .titel-liste li {
+    grid-template-columns: 5.5rem minmax(0, 1fr);
+    align-items: baseline;
+  }
+}
+
+.titel-liste__jahr {
+  font-family: var(--display);
+  font-size: 1.15rem;
+  color: var(--rot-hell);
+  letter-spacing: 0.04em;
+}
+
+.titel-liste__was {
+  font-size: var(--t-0);
+  font-weight: 500;
+}
+
+.titel-liste__was span {
+  display: block;
+  margin-top: 0.1rem;
+  font-size: var(--t--1);
+  font-weight: 400;
+  color: var(--grau);
+}
+
+/* --------------------------------------------------------------------------
+   12. Trainerraster
+   -------------------------------------------------------------------------- */
+.trainer-raster {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 900px) {
+  .trainer-raster {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.person {
+  min-width: 0;
+  background: var(--kohle);
+  border: 1px solid var(--linie);
+}
+
+.person img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  object-position: center 22%;
+}
+
+.person__koerper {
+  padding: 1.1rem 1.2rem 1.25rem;
+}
+
+.person__name {
+  font-family: var(--display);
+  font-size: var(--t-2);
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.person__rolle {
+  margin-top: 0.5rem;
+  font-size: var(--t--1);
+  color: var(--grau);
+}
+
+.person__merkmal {
+  display: inline-block;
+  margin-top: 0.7rem;
+  padding: 0.25rem 0.55rem;
+  background: var(--rot);
+  color: var(--weiss);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* --------------------------------------------------------------------------
+   13. Wochenplan
+   -------------------------------------------------------------------------- */
+.woche {
+  display: grid;
+  gap: 1px;
+  grid-template-columns: 1fr;
+  background: var(--linie);
+  border: 1px solid var(--linie);
+}
+
+@media (min-width: 560px) {
+  .woche {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 900px) {
+  .woche {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1180px) {
+  .woche {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
+.tag {
+  min-width: 0;
+  padding: 1.15rem 1rem 1.35rem;
+  background: var(--kohle);
+}
+
+.tag h2 {
+  margin-bottom: 1rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 3px solid var(--rot);
+  font-size: var(--t-1);
+  letter-spacing: 0.08em;
+}
+
+.tag ul {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.tag li {
+  display: grid;
+  gap: 0.1rem;
+  font-size: 0.85rem;
+}
+
+.tag__zeit {
+  color: var(--grau);
+  font-variant-numeric: tabular-nums;
+}
+
+.tag__kurs {
+  font-weight: 600;
+  color: var(--weiss);
+}
+
+.tag__zusatz {
+  color: var(--grau);
+}
+
+/* --------------------------------------------------------------------------
+   14. Preise
+   -------------------------------------------------------------------------- */
+.tarife {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .tarife {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1040px) {
+  .tarife {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.tarif {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 1.6rem 1.5rem 1.5rem;
+  background: var(--kohle);
+  border: 1px solid var(--linie);
+}
+
+.tarif--stark {
+  background: var(--stein);
+  border-color: var(--rot);
+}
+
+.tarif__laufzeit {
+  font-family: var(--display);
+  font-size: var(--t-2);
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.tarif__hinweis {
+  margin-top: 0.5rem;
+  font-size: var(--t--1);
+  color: var(--grau);
+}
+
+.tarif__preise {
+  display: grid;
+  gap: 0.9rem;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--linie);
+}
+
+.tarif__zeile {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.tarif__wer {
+  font-size: var(--t--1);
+  color: var(--grau-hell);
+}
+
+.tarif__wert {
+  flex: none;
+  font-family: var(--display);
+  font-size: var(--t-2);
+  line-height: 1;
+  color: var(--weiss);
+}
+
+.tarif__wert small {
+  display: block;
+  margin-top: 0.15rem;
+  font-family: var(--text);
+  font-size: 0.7rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  color: var(--grau);
+}
+
+.tarif__marke {
+  align-self: flex-start;
+  margin-bottom: 0.9rem;
+  padding: 0.25rem 0.6rem;
+  background: var(--rot);
+  color: var(--weiss);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.fussnote {
+  margin-top: 1.25rem;
+  font-size: var(--t--1);
+  color: var(--grau);
+}
+
+/* --------------------------------------------------------------------------
+   15. Galerie
+   -------------------------------------------------------------------------- */
+.galerie {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 720px) {
+  .galerie {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1040px) {
+  .galerie {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.galerie figure {
+  position: relative;
+  margin: 0;
+  min-width: 0;
+  overflow: hidden;
+  background: var(--kohle);
+}
+
+.galerie img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.galerie figcaption {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 2.5rem 0.9rem 0.75rem;
+  background: linear-gradient(to top, rgba(13, 13, 15, 0.92), rgba(13, 13, 15, 0));
+  font-size: 0.8rem;
+  color: var(--grau-hell);
+}
+
+.galerie figure--hoch {
+  grid-row: span 2;
+}
+
+.galerie figure--hoch img {
+  aspect-ratio: 1 / 2;
+}
+
+@media (max-width: 719px) {
+  .galerie figure--hoch {
+    grid-row: span 1;
+  }
+
+  .galerie figure--hoch img {
+    aspect-ratio: 1 / 1;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   16. Standort und Zeiten
+   -------------------------------------------------------------------------- */
+.info-raster {
+  display: grid;
+  gap: clamp(1.75rem, 4vw, 3rem);
+}
+
+@media (min-width: 860px) {
+  .info-raster {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.info-karte {
+  min-width: 0;
+  padding: clamp(1.5rem, 3vw, 2rem);
+  background: var(--kohle);
+  border: 1px solid var(--linie);
+  border-top: 4px solid var(--rot);
+}
+
+.info-karte h2,
+.info-karte h3 {
+  font-size: var(--t-2);
+  margin-bottom: 1.25rem;
+}
+
+.zeilen {
+  border-top: 1px solid var(--linie);
+}
+
+.zeilen > div {
+  display: grid;
+  gap: 0.2rem 1.5rem;
+  padding-block: 0.85rem;
+  border-bottom: 1px solid var(--linie);
+}
+
+@media (min-width: 480px) {
+  .zeilen > div {
+    grid-template-columns: 7.5rem minmax(0, 1fr);
+  }
+}
+
+.zeilen dt {
+  font-size: var(--t--1);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--grau);
+}
+
+.zeilen dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.zeilen dd a {
+  display: inline-block;
+  padding-block: 0.5rem;
+  margin-block: -0.5rem;
+  text-decoration: none;
+  border-bottom: 1px solid var(--linie-hell);
+  transition: border-color var(--schnell) var(--ease), color var(--schnell) var(--ease);
+}
+
+.zeilen dd a:hover {
+  border-bottom-color: var(--rot);
+  color: var(--rot-hell);
+}
+
+.zeilen dd.zu {
+  color: var(--grau);
+}
+
+/* --------------------------------------------------------------------------
+   17. Formular
+   -------------------------------------------------------------------------- */
+.formular {
+  display: grid;
+  gap: 1.35rem;
+}
+
+@media (min-width: 560px) {
+  .feld-paar {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.35rem;
+  }
+}
+
+.feld {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.feld label {
+  font-size: var(--t--1);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--grau-hell);
+}
+
+.feld .pflicht {
+  color: var(--rot-hell);
+}
+
+.feld input,
+.feld select,
+.feld textarea {
+  width: 100%;
+  min-height: 50px;
+  padding: 0.75rem 0.95rem;
+  background: var(--schwarz);
+  border: 1px solid var(--linie-hell);
+  color: var(--weiss);
+  font-size: var(--t-0);
+  transition: border-color var(--schnell) var(--ease),
+    box-shadow var(--schnell) var(--ease);
+}
+
+.feld textarea {
+  min-height: 7.5rem;
+  resize: vertical;
+}
+
+.feld select {
+  appearance: none;
+  padding-right: 2rem;
+  background-image: linear-gradient(45deg, transparent 50%, var(--grau) 50%),
+    linear-gradient(135deg, var(--grau) 50%, transparent 50%);
+  background-position: right 1rem center, right 0.75rem center;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+
+.feld input::placeholder,
+.feld textarea::placeholder {
+  color: #6e6e78;
+  opacity: 1;
+}
+
+.feld input:focus,
+.feld select:focus,
+.feld textarea:focus {
+  outline: none;
+  border-color: var(--rot);
+  box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.35);
+}
+
+.feld input[aria-invalid='true'],
+.feld textarea[aria-invalid='true'] {
+  border-color: var(--rot-hell);
+}
+
+.feld__fehler {
+  display: none;
+  font-size: 0.84rem;
+  color: var(--rot-hell);
+}
+
+.feld__fehler.ist-sichtbar {
+  display: block;
+}
+
+.einwilligung {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding-block: 0.3rem;
+  font-size: 0.88rem;
+  color: var(--grau-hell);
+}
+
+.einwilligung input {
+  width: 1.2rem;
+  height: 1.2rem;
+  min-height: 0;
+  margin-top: 0.25rem;
+  padding: 0;
+  accent-color: var(--rot);
+  flex: none;
+}
+
+.einwilligung a {
+  display: inline-block;
+  padding-block: 0.7rem;
+  margin-block: -0.7rem;
+}
+
+.formular-status {
+  display: none;
+  gap: 0.7rem;
+  padding: 1rem 1.15rem;
+  background: var(--stein);
+  border-left: 4px solid var(--rot);
+  font-size: var(--t--1);
+  color: var(--grau-hell);
+}
+
+.formular-status.ist-sichtbar {
+  display: flex;
+}
+
+.formular-status .icon {
+  margin-top: 0.25em;
+  color: var(--rot-hell);
+}
+
+/* --------------------------------------------------------------------------
+   18. Fusszeile
+   -------------------------------------------------------------------------- */
+.fuss {
+  background: var(--kohle);
+  border-top: 1px solid var(--linie);
+  padding-block: clamp(3rem, 6vw, 4.5rem) 1.75rem;
+  font-size: var(--t--1);
+  color: var(--grau);
+}
+
+.fuss__raster {
+  display: grid;
+  gap: 2.5rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid var(--linie);
+}
+
+@media (min-width: 760px) {
+  .fuss__raster {
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  }
+}
+
+.fuss__marke img {
+  height: 68px;
+  width: auto;
+  margin-bottom: 1.1rem;
+}
+
+.fuss h3 {
+  margin-bottom: 1rem;
+  font-family: var(--text);
+  font-size: var(--t--1);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--weiss);
+}
+
+.fuss__liste {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.fuss__liste a {
+  display: inline-block;
+  padding-block: 0.45rem;
+  margin-block: -0.45rem;
+  color: var(--grau);
+  text-decoration: none;
+  transition: color var(--schnell) var(--ease);
+}
+
+.fuss__liste a:hover {
+  color: var(--rot-hell);
+}
+
+.fuss__sozial {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1.1rem;
+}
+
+.fuss__sozial a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--linie-hell);
+  color: var(--weiss);
+  font-size: 1.15rem;
+  transition: background-color var(--schnell) var(--ease),
+    border-color var(--schnell) var(--ease), color var(--schnell) var(--ease);
+}
+
+.fuss__sozial a:hover {
+  background: var(--rot);
+  border-color: var(--rot);
+  color: var(--weiss);
+}
+
+/* #7a7a84 erreichte auf --kohle nur 4.21:1. #8a8a92 kommt auf 5.22:1. */
+.fuss__unten {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.75rem;
+  justify-content: space-between;
+  padding-top: 1.5rem;
+  font-size: 0.8rem;
+  color: #8a8a92;
+}
+
+.fuss__unten nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+}
+
+.fuss__unten a {
+  display: inline-block;
+  padding-block: 0.6rem;
+  margin-block: -0.5rem;
+  color: #8a8a92;
+  text-decoration: none;
+}
+
+.fuss__unten a:hover {
+  color: var(--weiss);
+}
+
+/* --------------------------------------------------------------------------
+   19. Mobile Aktionsleiste
+   -------------------------------------------------------------------------- */
+.leiste {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 95;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  background: var(--kohle);
+  border-top: 1px solid var(--linie);
+  transform: translateY(110%);
+  transition: transform var(--mittel) var(--ease);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.leiste.ist-sichtbar {
+  transform: translateY(0);
+}
+
+@media (min-width: 768px) {
+  .leiste {
+    display: none;
+  }
+}
+
+.leiste a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 54px;
+  padding: 0 1.2rem;
+  color: var(--weiss);
+  font-family: var(--display);
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.leiste a:last-child {
+  background: var(--rot);
+}
+
+@media (max-width: 767px) {
+  body.hat-leiste {
+    padding-bottom: 3.5rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   20. Bewegung
+   Nur transform und opacity. Kurven aus der animate-Skill.
+   -------------------------------------------------------------------------- */
+[data-auftritt] {
+  opacity: 1;
+}
+
+.js [data-auftritt] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity var(--lang) var(--ease), transform var(--lang) var(--ease);
+}
+
+.js [data-auftritt].ist-da {
+  opacity: 1;
+  transform: none;
+}
+
+.js [data-auftritt-gruppe] > * {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity var(--lang) var(--ease), transform var(--lang) var(--ease);
+}
+
+.js [data-auftritt-gruppe].ist-da > * {
+  opacity: 1;
+  transform: none;
+}
+
+.js [data-auftritt-gruppe].ist-da > *:nth-child(1) { transition-delay: 0ms; }
+.js [data-auftritt-gruppe].ist-da > *:nth-child(2) { transition-delay: 70ms; }
+.js [data-auftritt-gruppe].ist-da > *:nth-child(3) { transition-delay: 140ms; }
+.js [data-auftritt-gruppe].ist-da > *:nth-child(4) { transition-delay: 210ms; }
+.js [data-auftritt-gruppe].ist-da > *:nth-child(n + 5) { transition-delay: 280ms; }
+
+/* Nur echte Zeigegeraete. Auf dem Touchscreen bliebe ein Hover haengen. */
+@media (hover: hover) and (pointer: fine) {
+  .karte__bild img,
+  .galerie img {
+    transition: transform var(--lang) var(--ease);
+  }
+
+  .karte:hover .karte__bild img {
+    transform: scale(1.05);
+  }
+
+  .galerie figure:hover img {
+    transform: scale(1.05);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .js [data-auftritt],
+  .js [data-auftritt-gruppe] > * {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   21. Rechtstexte
+   -------------------------------------------------------------------------- */
+.recht {
+  max-width: 70ch;
+  color: var(--grau-hell);
+  hyphens: auto;
+  overflow-wrap: break-word;
+}
+
+.recht h2 {
+  margin-top: 2.5rem;
+  margin-bottom: 0.8rem;
+  font-size: var(--t-2);
+  color: var(--weiss);
+}
+
+.recht h3 {
+  margin-top: 1.75rem;
+  margin-bottom: 0.5rem;
+  font-size: var(--t-1);
+  color: var(--weiss);
+}
+
+.recht p {
+  margin-bottom: 1rem;
+}
+
+.recht ul,
+.recht ol {
+  margin-bottom: 1rem;
+  padding-left: 1.25rem;
+}
+
+.recht li {
+  margin-bottom: 0.35rem;
+  list-style: disc;
+}
+
+.recht a {
+  word-break: break-word;
+}
+
+.hinweis {
+  max-width: 70ch;
+  margin-bottom: 2.25rem;
+  padding: 1.1rem 1.35rem;
+  background: var(--stein);
+  border-left: 4px solid var(--rot);
+  font-size: var(--t--1);
+  color: var(--grau-hell);
+}
+
+.hinweis--abstand {
+  margin-top: 2rem;
+}
+
+.hinweis strong {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: var(--weiss);
+  font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   22. Druck
+   -------------------------------------------------------------------------- */
+@media print {
+  .kopf,
+  .leiste,
+  .schublade,
+  .formular,
+  .fuss {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+    font-size: 11pt;
+  }
+
+  .band {
+    padding-block: 1rem;
+    break-inside: avoid;
+  }
+
+  .hero::after,
+  .karte__bild::after {
+    display: none;
+  }
+}

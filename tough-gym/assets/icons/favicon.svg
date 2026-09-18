@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Schwarzes Feld, roter Balken, weisses T wie in der Wortmarke. -->
+  <rect width="64" height="64" fill="#0d0d0f"/>
+  <rect x="0" y="50" width="64" height="14" fill="#c8102e"/>
+  <path d="M12 14h40v10H37v22H27V24H12Z" fill="#ffffff"/>
+</svg>
