@@ -128,8 +128,8 @@ p { margin: 0; }
 .logo:hover { color: var(--tinte); }
 
 .logo__zeichen {
-  width: 40px;
-  height: 40px;
+  width: 46px;
+  height: 46px;
   flex-shrink: 0;
 }
 
@@ -146,14 +146,17 @@ p { margin: 0; }
 }
 .logo__name span { color: var(--akzent); }
 
+/* Wie im Logo: Linie unter dem Namen, "WEBDESIGN" auf volle Breite gesperrt */
 .logo__zusatz {
   font-size: 0.62rem;
   font-weight: 600;
-  letter-spacing: 0.34em;
+  line-height: 1;
   text-transform: uppercase;
   color: var(--akzent);
   border-top: 2px solid var(--tinte);
-  padding-top: 4px;
+  padding-top: 5px;
+  text-align: justify;
+  text-align-last: justify;
 }
 
 /* ---------- Kopf ---------- */
@@ -692,10 +695,35 @@ h2 {
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
   transform: rotate(-2deg);
 }
+.visitenkarte__logo {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.8rem, 2vw, 1.2rem);
+}
+.visitenkarte__zeichen {
+  width: clamp(56px, 8vw, 76px);
+  height: clamp(56px, 8vw, 76px);
+  flex-shrink: 0;
+}
+.visitenkarte__wort {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
 .visitenkarte__name {
   font-family: var(--serif);
   font-size: clamp(2rem, 4vw, 2.8rem);
+  line-height: 0.9;
+}
+.visitenkarte__zusatz {
+  font-size: 0.7rem;
+  font-weight: 600;
   line-height: 1;
+  color: var(--akzent-tief);
+  border-top: 2px solid #1b1b1f;
+  padding-top: 6px;
+  text-align: justify;
+  text-align-last: justify;
 }
 .visitenkarte__name span { color: var(--akzent-tief); }
 .visitenkarte__daten {

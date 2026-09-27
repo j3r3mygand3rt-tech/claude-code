@@ -46,7 +46,8 @@ Den kompletten Inhalt dieses Ordners (auch die versteckte Datei `.htaccess`) per
 
 ## Gestaltung
 
-- Logo: Entwurf 44, „G in Blau, gefülltes Quadrat“, aus dem Canvas „Gandert. Logo-Entwürfe“
+- Logo: Entwurf 44, „G in Blau, gefülltes Quadrat“. Auf dem dunklen Hintergrund mit weißer Umrandung um das Quadrat, auf hellem Grund (Visitenkarte) ohne.
+- Name: „Gandert.“ mit dem Zusatz „Webdesign“
 - Farben: Grund `#070b14`, Fläche `#0c1320`, Text `#e6edf5`, Akzent `#38BDF8`
 - Schriften: DM Serif Display (Überschriften, Wortmarke), Manrope (Fließtext)
 - Preise und Abos: aus dem Entwurf „Gandert Design – Preise & Abos“
