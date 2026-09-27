@@ -1,0 +1,22 @@
+# Gandert. Webdesign
+
+> Webdesign von Jeremy Gandert aus Stelle (Landkreis Harburg). Moderne Websites zum Festpreis und Website-Betreuung im Abo für kleine und mittlere Betriebe in Hamburg, im Landkreis Harburg, im Kreis Pinneberg und in Norderstedt.
+
+## Zielgruppe
+Inhabergeführte Betriebe mit 1 bis 20 Mitarbeitenden: Handwerk (Sanitär, Heizung, Elektro, Photovoltaik), Einzelhandel, Sport und Gesundheit, Gastronomie und Dienstleister.
+
+## Website-Pakete (Festpreis)
+- Kompakt, ab 890 €: bis 3 Seiten, individuelles Design, Kontaktformular, fertig in 7 Werktagen
+- Komplett, ab 1.690 €: bis 8 Seiten, Leistungs- und Referenzseiten, erweiterte Suchmaschinen-Einrichtung, Einrichtung für KI-Assistenten, fertig in höchstens 14 Werktagen
+- Online-Shop, ab 2.490 €: Shop-System, bis 30 Produkte, Zahlungsarten, Versandregeln, Rechtstexte
+
+## Betreuung im Abo
+- Wartung, 49 € pro Monat: Updates, Backups, Sicherheits-Checks, kleine Änderungen bis 30 Minuten
+- Sichtbarkeit, 129 € pro Monat: zusätzlich Pflege des Google-Unternehmensprofils, monatlicher Sichtbarkeits-Bericht, Änderungen bis 1 Stunde
+- Wachstum, 249 € pro Monat: zusätzlich laufende Optimierung für KI-Assistenten, 1 neuer Inhalt pro Monat, Strategiegespräch jedes Quartal
+
+## Kontakt
+- Website: https://[DOMAIN]/
+- Telefon: [TELEFON]
+- E-Mail: [E-MAIL]
+- Erstgespräch kostenlos, vor Ort oder am Telefon
