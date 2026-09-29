@@ -25,6 +25,8 @@
     "precision mediump float;",
     "uniform vec2 resolution;",
     "uniform float time;",
+    "uniform float oben;",   // Höhe der Kopfleiste in Rechenpixeln
+    "uniform float blende;", // Länge des Übergangs unter der Kopfleiste
     "",
     "vec3 fleck(vec2 p, vec2 mitte, float radius, vec3 farbe) {",
     "  vec2 d = p - mitte;",
@@ -45,11 +47,17 @@
     "  vec3 farbe = vec3(0.027, 0.043, 0.078);",
     // Jeder Fleck wandert quer über die ganze Breite (etwas über den Rand hinaus)
     // und wieder zurück. Eigene Dauer und eigener Startpunkt je Fleck, damit
-    // sie nie im Gleichtakt laufen: ca. 38 s, 52 s, 67 s und 83 s pro Durchgang.
+    // sie nie im Gleichtakt laufen. Mit TEMPO 3: ca. 13 s, 17 s, 22 s und 28 s pro Durchgang.
     "  farbe += fleck(p, vec2(seite * (0.5 + 0.62 * sin(t * 0.165)),        0.32 + 0.14 * sin(t * 0.090 + 1.0)), 0.42, vec3(0.22, 0.74, 0.97) * 0.30);",
     "  farbe += fleck(p, vec2(seite * (0.5 + 0.62 * sin(t * 0.121 + 2.4)),  0.64 + 0.12 * cos(t * 0.070)),       0.48, vec3(0.05, 0.53, 0.91) * 0.28);",
     "  farbe += fleck(p, vec2(seite * (0.5 + 0.62 * cos(t * 0.094 + 4.1)),  0.18 + 0.12 * sin(t * 0.110 + 2.0)), 0.40, vec3(0.14, 0.26, 0.78) * 0.26);",
     "  farbe += fleck(p, vec2(seite * (0.5 + 0.62 * sin(t * 0.076 + 5.3)),  0.86 + 0.10 * cos(t * 0.080 + 0.5)), 0.36, vec3(0.03, 0.45, 0.60) * 0.22);",
+    "",
+    // Hinter der Kopfleiste keine Farbe: dort bleibt der Grund immer #070b14,
+    // darunter blenden die Farbverläufe weich ein.
+    "  float abstandOben = resolution.y - gl_FragCoord.y;",
+    "  float maske = smoothstep(oben, oben + blende, abstandOben);",
+    "  farbe = mix(vec3(0.027, 0.043, 0.078), farbe, maske);",
     "",
     // Leichtes Rauschen verhindert Farbstufen in den Verläufen
     "  farbe += (rauschen(gl_FragCoord.xy + t) - 0.5) / 255.0 * 2.0;",
@@ -89,10 +97,14 @@
 
   var uZeit = gl.getUniformLocation(programm, "time");
   var uAufloesung = gl.getUniformLocation(programm, "resolution");
+  var uOben = gl.getUniformLocation(programm, "oben");
+  var uBlende = gl.getUniformLocation(programm, "blende");
+  var kopf = document.querySelector(".kopf");
 
   huelle.appendChild(canvas);
 
   var MASSSTAB = 0.25; // Rechenauflösung: ein Viertel der Fenstergröße
+  var TEMPO = 3;       // Geschwindigkeit: höher = schneller
 
   function groesse() {
     var b = Math.max(1, Math.round(huelle.clientWidth * MASSSTAB));
@@ -103,6 +115,9 @@
       gl.viewport(0, 0, b, h);
     }
     gl.uniform2f(uAufloesung, b, h);
+    var kopfHoehe = kopf ? kopf.offsetHeight : 76;
+    gl.uniform1f(uOben, kopfHoehe * MASSSTAB);
+    gl.uniform1f(uBlende, 180 * MASSSTAB);
   }
 
   var start = 0;
@@ -111,7 +126,7 @@
   var ruhig = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)");
 
   function zeichnen(sekunden) {
-    gl.uniform1f(uZeit, versatz + sekunden);
+    gl.uniform1f(uZeit, versatz + sekunden * TEMPO);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
   }
 

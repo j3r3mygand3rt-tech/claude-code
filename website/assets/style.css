@@ -165,10 +165,8 @@ p { margin: 0; }
   position: sticky;
   top: env(safe-area-inset-top, 0px);
   z-index: 50;
-  background: rgba(7, 11, 20, 0.88);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--linie);
+  /* Gleiche Farbe wie der Hintergrund-Grund; der Farbverlauf ist hinter der Leiste ausgeblendet */
+  background: var(--grund);
 }
 
 .kopf__innen {
