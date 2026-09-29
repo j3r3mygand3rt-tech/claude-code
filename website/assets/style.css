@@ -309,7 +309,7 @@ h2 {
   max-width: 62ch;
 }
 
-/* ---------- Hintergrund (Shader-Linien) ---------- */
+/* ---------- Hintergrund (wandernde Farbverläufe, assets/hintergrund.js) ---------- */
 
 html { background: var(--grund); }
 body { background: transparent; }
@@ -321,7 +321,8 @@ body { background: transparent; }
   pointer-events: none;
   /* Ersatz, falls WebGL fehlt: ruhiger Farbverlauf */
   background:
-    radial-gradient(ellipse at 50% 38%, rgba(56, 189, 248, 0.16), transparent 60%),
+    radial-gradient(ellipse at 20% 30%, rgba(56, 189, 248, 0.14), transparent 55%),
+    radial-gradient(ellipse at 80% 70%, rgba(14, 165, 233, 0.12), transparent 55%),
     var(--grund);
 }
 .hintergrund canvas {
@@ -332,10 +333,10 @@ body { background: transparent; }
 
 .kopf, main, .fuss { position: relative; z-index: 1; }
 
-/* Außerhalb des Heros liegt ein dunkler Schleier über den Linien,
+/* Außerhalb des Heros liegt ein dunkler Schleier über den Farbverläufen,
    damit Texte und Preise gut lesbar bleiben. */
-.abschnitt { background: rgba(7, 11, 20, 0.86); }
-.abschnitt--flaeche { background: rgba(12, 19, 32, 0.9); }
+.abschnitt { background: rgba(7, 11, 20, 0.72); }
+.abschnitt--flaeche { background: rgba(12, 19, 32, 0.8); }
 .fuss { background: rgba(7, 11, 20, 0.94); }
 
 /* ---------- Hero ---------- */
@@ -345,8 +346,7 @@ body { background: transparent; }
   padding-block: clamp(5rem, 13vw, 9.5rem) clamp(5rem, 12vw, 9rem);
   text-align: center;
   background:
-    radial-gradient(ellipse 48% 42% at 50% 50%, rgba(7, 11, 20, 0.7), transparent 100%),
-    linear-gradient(to bottom, rgba(7, 11, 20, 0.25), rgba(7, 11, 20, 0.5) 70%, rgba(7, 11, 20, 0.86));
+    linear-gradient(to bottom, rgba(7, 11, 20, 0) 55%, rgba(7, 11, 20, 0.72));
 }
 
 .hero__text {

@@ -1,8 +1,8 @@
 /*
- * Hintergrund "Shader-Linien"
- * Derselbe Fragment-Shader wie die React-Komponente ShaderAnimation,
- * hier ohne React und ohne Three.js direkt in WebGL umgesetzt.
- * Es wird nichts von fremden Servern geladen.
+ * Hintergrund: weiche, langsam wandernde Farbverläufe in den Blautönen
+ * des Logos. Reines WebGL, es wird nichts von fremden Servern geladen.
+ * Weil das Bild ohnehin unscharf ist, wird es in geringer Auflösung
+ * berechnet und vom Browser hochskaliert – das schont Akku und Grafikkarte.
  */
 (function () {
   "use strict";
@@ -22,25 +22,35 @@
     "void main() { gl_Position = vec4(position, 0.0, 1.0); }";
 
   var fragmentQuelle = [
-    "precision highp float;",
+    "precision mediump float;",
     "uniform vec2 resolution;",
     "uniform float time;",
-    "float random(in float x) { return fract(sin(x) * 1e4); }",
+    "",
+    "vec3 fleck(vec2 p, vec2 mitte, float radius, vec3 farbe) {",
+    "  vec2 d = p - mitte;",
+    "  return farbe * exp(-dot(d, d) / (radius * radius));",
+    "}",
+    "",
+    "float rauschen(vec2 st) {",
+    "  return fract(sin(dot(st, vec2(12.9898, 78.233))) * 43758.5453);",
+    "}",
+    "",
     "void main(void) {",
-    "  vec2 uv = (gl_FragCoord.xy * 2.0 - resolution.xy) / min(resolution.x, resolution.y);",
-    "  vec2 fMosaicScal = vec2(4.0, 2.0);",
-    "  vec2 vScreenSize = vec2(256.0, 256.0);",
-    "  uv.x = floor(uv.x * vScreenSize.x / fMosaicScal.x) / (vScreenSize.x / fMosaicScal.x);",
-    "  uv.y = floor(uv.y * vScreenSize.y / fMosaicScal.y) / (vScreenSize.y / fMosaicScal.y);",
-    "  float t = time * 0.06 + random(uv.x) * 0.4;",
-    "  float lineWidth = 0.0008;",
-    "  vec3 color = vec3(0.0);",
-    "  for (int j = 0; j < 3; j++) {",
-    "    for (int i = 0; i < 5; i++) {",
-    "      color[j] += lineWidth * float(i * i) / abs(fract(t - 0.01 * float(j) + float(i) * 0.01) * 1.0 - length(uv));",
-    "    }",
-    "  }",
-    "  gl_FragColor = vec4(color[2], color[1], color[0], 1.0);",
+    "  float seite = resolution.x / resolution.y;",
+    "  vec2 p = gl_FragCoord.xy / resolution.xy;",
+    "  p.x *= seite;",
+    "  float t = time;",
+    "",
+    // Farben: Grund #070b14, Himmelblau #38BDF8, Blau #0EA5E9, Königsblau, Petrol
+    "  vec3 farbe = vec3(0.027, 0.043, 0.078);",
+    "  farbe += fleck(p, vec2(seite * (0.22 + 0.16 * sin(t * 0.11)), 0.30 + 0.22 * cos(t * 0.09)), 0.42, vec3(0.22, 0.74, 0.97) * 0.30);",
+    "  farbe += fleck(p, vec2(seite * (0.72 + 0.18 * cos(t * 0.07)), 0.62 + 0.20 * sin(t * 0.10)), 0.48, vec3(0.05, 0.53, 0.91) * 0.28);",
+    "  farbe += fleck(p, vec2(seite * (0.55 + 0.25 * sin(t * 0.05 + 2.0)), 0.18 + 0.15 * sin(t * 0.08 + 1.0)), 0.40, vec3(0.14, 0.26, 0.78) * 0.26);",
+    "  farbe += fleck(p, vec2(seite * (0.10 + 0.12 * cos(t * 0.06 + 1.5)), 0.85 + 0.12 * cos(t * 0.12)), 0.36, vec3(0.03, 0.45, 0.60) * 0.22);",
+    "",
+    // Leichtes Rauschen verhindert Farbstufen in den Verläufen
+    "  farbe += (rauschen(gl_FragCoord.xy + t) - 0.5) / 255.0 * 2.0;",
+    "  gl_FragColor = vec4(farbe, 1.0);",
     "}"
   ].join("\n");
 
@@ -79,11 +89,11 @@
 
   huelle.appendChild(canvas);
 
+  var MASSSTAB = 0.25; // Rechenauflösung: ein Viertel der Fenstergröße
+
   function groesse() {
-    // Pixeldichte begrenzen: der Shader rechnet ohnehin mosaikartig
-    var dichte = Math.min(window.devicePixelRatio || 1, 1.5);
-    var b = Math.round(huelle.clientWidth * dichte);
-    var h = Math.round(huelle.clientHeight * dichte);
+    var b = Math.max(1, Math.round(huelle.clientWidth * MASSSTAB));
+    var h = Math.max(1, Math.round(huelle.clientHeight * MASSSTAB));
     if (canvas.width !== b || canvas.height !== h) {
       canvas.width = b;
       canvas.height = h;
@@ -92,41 +102,44 @@
     gl.uniform2f(uAufloesung, b, h);
   }
 
-  var zeit = 1.0;
-  var letzte = 0;
+  var start = 0;
+  var versatz = 20; // Startbild mit gut verteilten Farbflecken
   var laeuft = false;
   var ruhig = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)");
 
-  function zeichnen() {
-    gl.uniform1f(uZeit, zeit);
+  function zeichnen(sekunden) {
+    gl.uniform1f(uZeit, versatz + sekunden * 1.5);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
   }
 
+  var letzteSekunden = 0;
+  var letztesBild = 0;
   function schritt(jetzt) {
     if (!laeuft) return;
-    // Wie im Original +0.05 pro Bild, bezogen auf 60 Bilder pro Sekunde
-    var delta = letzte ? Math.min((jetzt - letzte) / 16.667, 4) : 1;
-    letzte = jetzt;
-    zeit += 0.05 * delta;
-    zeichnen();
+    if (!start) start = jetzt - letzteSekunden * 1000;
+    // Die Bewegung ist sehr langsam – 30 Bilder pro Sekunde genügen
+    if (jetzt - letztesBild >= 33) {
+      letztesBild = jetzt;
+      letzteSekunden = (jetzt - start) / 1000;
+      zeichnen(letzteSekunden);
+    }
     window.requestAnimationFrame(schritt);
   }
 
   function starten() {
     if (laeuft || document.hidden || (ruhig && ruhig.matches)) return;
     laeuft = true;
-    letzte = 0;
+    start = 0;
     window.requestAnimationFrame(schritt);
   }
 
   function anhalten() { laeuft = false; }
 
   groesse();
-  zeit = 8.0;   // Startbild mit gut verteilten Ringen
-  zeichnen();   // Standbild, auch bei reduzierter Bewegung
+  zeichnen(0);   // Standbild, auch bei reduzierter Bewegung
   starten();
 
-  window.addEventListener("resize", function () { groesse(); zeichnen(); });
+  window.addEventListener("resize", function () { groesse(); zeichnen(letzteSekunden); });
   document.addEventListener("visibilitychange", function () {
     if (document.hidden) anhalten(); else starten();
   });

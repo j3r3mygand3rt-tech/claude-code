@@ -11,7 +11,7 @@ Statische Website (HTML, CSS, ein kleines JavaScript) plus ein PHP-Skript für d
 | `danke.html` | Bestätigung, falls das Formular ohne JavaScript abgeschickt wird |
 | `kontakt.php` | Verschickt Anfragen per E-Mail (mit Spam-Schutz) |
 | `assets/style.css`, `assets/main.js` | Gestaltung, Mobilmenü, Formular |
-| `assets/linien.js` | Animierter Hintergrund (Shader-Linien) in reinem WebGL, ohne Three.js oder fremde Server. Hält bei „Bewegung reduzieren“ und in inaktiven Tabs an |
+| `assets/hintergrund.js` | Animierter Hintergrund: weiche, langsam wandernde Farbverläufe in den Logo-Blautönen. Reines WebGL ohne fremde Server, geringe Rechenauflösung, hält bei „Bewegung reduzieren“ und in inaktiven Tabs an |
 | `assets/fonts/` | DM Serif Display und Manrope, **lokal** eingebunden |
 | `llms.txt` | Kurzfassung für KI-Assistenten wie ChatGPT |
 | `robots.txt`, `sitemap.xml` | Für Suchmaschinen |
