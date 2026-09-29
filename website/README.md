@@ -11,6 +11,7 @@ Statische Website (HTML, CSS, ein kleines JavaScript) plus ein PHP-Skript für d
 | `danke.html` | Bestätigung, falls das Formular ohne JavaScript abgeschickt wird |
 | `kontakt.php` | Verschickt Anfragen per E-Mail (mit Spam-Schutz) |
 | `assets/style.css`, `assets/main.js` | Gestaltung, Mobilmenü, Formular |
+| `assets/linien.js` | Animierter Hintergrund (Shader-Linien) in reinem WebGL, ohne Three.js oder fremde Server. Hält bei „Bewegung reduzieren“ und in inaktiven Tabs an |
 | `assets/fonts/` | DM Serif Display und Manrope, **lokal** eingebunden |
 | `llms.txt` | Kurzfassung für KI-Assistenten wie ChatGPT |
 | `robots.txt`, `sitemap.xml` | Für Suchmaschinen |
@@ -21,7 +22,7 @@ Statische Website (HTML, CSS, ein kleines JavaScript) plus ein PHP-Skript für d
 Alle Platzhalter stehen in eckigen Klammern. Suchen mit `grep -rn "\[" --include=*.html --include=*.php --include=*.txt --include=*.xml .`
 
 - [ ] `[DOMAIN]` in `index.html`, `robots.txt`, `sitemap.xml`, `llms.txt`, `kontakt.php`
-- [ ] `[TELEFON]` und `[E-MAIL]` in `index.html`, `impressum.html`, `datenschutz.html`, `llms.txt`, `kontakt.php`
+- [ ] `[E-MAIL]` in `index.html`, `impressum.html`, `datenschutz.html`, `llms.txt`, `kontakt.php`
 - [ ] `[STRASSE HAUSNUMMER]` und `[PLZ]` in `impressum.html` und `datenschutz.html`. Eine ladungsfähige Anschrift ist Pflicht; ein Postfach genügt nicht.
 - [ ] `[ANZAHL]` Tage Speicherdauer der Server-Protokolle in `datenschutz.html` (in der Hostinger-Verwaltung nachsehen)
 - [ ] Absender in `kontakt.php` als Postfach der eigenen Domain anlegen, damit Mails nicht im Spam landen
@@ -51,3 +52,4 @@ Den kompletten Inhalt dieses Ordners (auch die versteckte Datei `.htaccess`) per
 - Farben: Grund `#070b14`, Fläche `#0c1320`, Text `#e6edf5`, Akzent `#38BDF8`
 - Schriften: DM Serif Display (Überschriften, Wortmarke), Manrope (Fließtext)
 - Preise und Abos: aus dem Entwurf „Gandert Design – Preise & Abos“
+- Sonderaktion: Die ersten 5 Kunden erhalten bis zu 50 % auf Kompakt, Komplett und Online-Shop (nicht auf Abos). Nach dem fünften Auftrag in `index.html` und `llms.txt` entfernen (Suche nach „Sonderaktion“), sonst ist die Werbung irreführend.

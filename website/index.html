@@ -34,12 +34,15 @@
   },
   "areaServed": ["Hamburg", "Landkreis Harburg", "Kreis Pinneberg", "Norderstedt"],
   "priceRange": "ab 890 €",
+  "telephone": "+49 152 53252268",
   "knowsLanguage": "de"
 }
 </script>
 <script>document.documentElement.classList.remove("ohne-js");</script>
 </head>
 <body>
+
+<div class="hintergrund" aria-hidden="true"></div>
 
 <a class="sprungmarke" href="#inhalt">Zum Inhalt springen</a>
 
@@ -65,14 +68,13 @@
       </button>
       <div class="nav__menue" id="menue">
         <ul class="nav__liste">
-          <li><a href="#leistungen">Leistungen</a></li>
+          <li><a href="#top">Start</a></li>
           <li><a href="#preise">Preise</a></li>
           <li><a href="#betreuung">Betreuung</a></li>
-          <li><a href="#ablauf">Ablauf</a></li>
           <li><a href="#ueber-mich">Über mich</a></li>
-          <li><a href="#fragen">Fragen</a></li>
+          <li><a href="#kontakt">Kontakt</a></li>
         </ul>
-        <a class="knopf knopf--voll knopf--klein" href="#kontakt">Projekt anfragen</a>
+        <a class="knopf knopf--rahmen knopf--klein" href="#kontakt">Projekt anfragen →</a>
       </div>
     </nav>
   </div>
@@ -82,149 +84,38 @@
 
   <!-- ============ Hero ============ -->
   <section class="hero" id="top">
-    <div class="huelle hero__raster">
-      <div class="hero__text">
-        <span class="augenbraue">Webdesign aus dem Landkreis Harburg</span>
-        <h1>Eine Website, die Ihnen <em>Anfragen</em> bringt.</h1>
-        <p class="hero__unter">Ich baue moderne Websites für Betriebe in Hamburg und im Umland – zum Festpreis, in wenigen Tagen online und so eingerichtet, dass Kunden Sie bei Google und in KI-Assistenten wie ChatGPT finden.</p>
-        <div class="hero__aktionen">
-          <a class="knopf knopf--voll" href="#kontakt">Kostenloses Erstgespräch</a>
-          <a class="knopf knopf--rahmen" href="#preise">Preise ansehen</a>
-        </div>
-        <ul class="hero__fakten">
-          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5"/></svg>Festpreis vor Projektstart</li>
-          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5"/></svg>Kompakt-Paket in 7 Werktagen</li>
-          <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5"/></svg>Beratung vor Ort</li>
-        </ul>
+    <div class="huelle hero__text">
+      <a class="aktion-pille" href="#sonderaktion"><b>Sonderaktion</b>Die ersten 5 Kunden sparen bis zu 50 %</a>
+      <h1>Eine Website, die Ihnen <em>Anfragen</em> bringt.</h1>
+      <p class="hero__unter">Individuelles Webdesign für Betriebe in Hamburg und im Landkreis Harburg: zum Festpreis, in wenigen Tagen online und so eingerichtet, dass Kunden Sie bei Google und in KI-Assistenten wie ChatGPT finden.</p>
+      <div class="hero__aktionen">
+        <a class="knopf knopf--voll" href="#kontakt">Kostenloses Erstgespräch</a>
+        <a class="knopf knopf--rahmen" href="#preise">Preise ansehen</a>
       </div>
-
-      <figure class="check" aria-labelledby="check-titel">
-        <div class="check__leiste" aria-hidden="true">
-          <span class="check__punkte"><i></i><i></i><i></i></span>
-          <span class="check__adresse">www.ihr-betrieb.de</span>
-        </div>
-        <div class="check__inhalt">
-          <div class="check__titel">
-            <strong id="check-titel">Kurzer Website-Check</strong>
-            <span>Beispiel</span>
-          </div>
-          <ul class="check__liste">
-            <li>
-              <svg class="symbol--fehlt" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="8"/><path d="M10 6v5M10 14h.01"/></svg>
-              Verschlüsselung (https)
-              <span class="status status--fehlt">fehlt</span>
-            </li>
-            <li>
-              <svg class="symbol--fehlt" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="8"/><path d="M10 6v5M10 14h.01"/></svg>
-              Impressum vollständig
-              <span class="status status--fehlt">Platzhalter</span>
-            </li>
-            <li>
-              <svg class="symbol--fehlt" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="8"/><path d="M10 6v5M10 14h.01"/></svg>
-              Auf dem Smartphone lesbar
-              <span class="status status--fehlt">nein</span>
-            </li>
-            <li>
-              <svg class="symbol--ok" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="8"/><path d="M6.5 10.2l2.4 2.3 4.6-4.8"/></svg>
-              Google-Unternehmensprofil
-              <span class="status status--ok">vorhanden</span>
-            </li>
-            <li>
-              <svg class="symbol--fehlt" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="8"/><path d="M10 6v5M10 14h.01"/></svg>
-              Von ChatGPT empfohlen
-              <span class="status status--fehlt">nicht gefunden</span>
-            </li>
-          </ul>
-          <figcaption class="check__fuss">So sieht ein typischer Befund aus. Den Check für Ihre Website mache ich im Erstgespräch kostenlos.</figcaption>
-        </div>
-      </figure>
-    </div>
-  </section>
-
-  <!-- ============ Für wen ============ -->
-  <section class="abschnitt abschnitt--flaeche" id="leistungen">
-    <div class="huelle">
-      <div class="abschnitt__kopf">
-        <span class="augenbraue">Für wen</span>
-        <h2>Für Betriebe, die vor Ort arbeiten und online gefunden werden wollen.</h2>
-        <p class="einleitung">Viele Betriebe haben keine Website, nur eine Facebook-Seite oder einen Auftritt, der seit Jahren nicht gepflegt wurde. Dabei suchen Kunden zuerst im Netz. Ich baue Websites für inhabergeführte Betriebe mit 1 bis 20 Mitarbeitenden.</p>
-      </div>
-
-      <div class="branchen">
-        <div class="branche">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/></svg>
-          <h3>Handwerk</h3>
-          <p>Sanitär, Heizung, Elektro, Photovoltaik: Leistungen zeigen, Anfragen und Fachkräfte gewinnen.</p>
-        </div>
-        <div class="branche">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h16l-1 11H5z"/><path d="M8 9V7a4 4 0 0 1 8 0v2"/></svg>
-          <h3>Einzelhandel</h3>
-          <p>Öffnungszeiten, Sortiment, Anfahrt und Lieferservice auf einen Blick.</p>
-        </div>
-        <div class="branche">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 6.5v11M17.5 6.5v11M3 9.5v5M21 9.5v5M6.5 12h11"/></svg>
-          <h3>Sport und Gesundheit</h3>
-          <p>Kursplan, Probetraining und Online-Buchung für Studios und Vereine.</p>
-        </div>
-        <div class="branche">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3v8a2 2 0 0 1-2 2v8M7 3v6M4 3v6a3 3 0 0 0 3 3M10 3v6a3 3 0 0 1-3 3M17 21V3c-2 1-3 4-3 7h3"/></svg>
-          <h3>Gastronomie</h3>
-          <p>Speisekarte, Reservierung und eine starke Präsenz bei Google Maps.</p>
-        </div>
-        <div class="branche">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10z"/></svg>
-          <h3>Dienstleister</h3>
-          <p>Hundeschulen, Beratung, Praxen: Vertrauen aufbauen und Termine anfragen lassen.</p>
-        </div>
-      </div>
-
-      <div class="abschnitt__kopf zwischenkopf">
-        <span class="augenbraue">Warum Gandert.</span>
-        <h2>Professionell wie eine Agentur, persönlich wie der Betrieb nebenan.</h2>
-      </div>
-
-      <div class="vorteile">
-        <div class="vorteil">
-          <span class="vorteil__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 3L5 14h6l-1 7 8-11h-6z"/></svg></span>
-          <h3>Schnell</h3>
-          <p>Mit einem KI-gestützten Arbeitsablauf ist der erste Entwurf oft nach wenigen Tagen fertig. Das Kompakt-Paket geht in 7 Werktagen online.</p>
-        </div>
-        <div class="vorteil">
-          <span class="vorteil__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>
-          <h3>Planbar</h3>
-          <p>Sie bekommen vor dem Start ein schriftliches Angebot mit Festpreis und Livegang-Termin. Keine Stundenzettel, keine Nachforderungen.</p>
-        </div>
-        <div class="vorteil">
-          <span class="vorteil__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg></span>
-          <h3>Lokal und persönlich</h3>
-          <p>Ich komme zu Ihnen, in Hamburg und im Umland. Sie haben einen festen Ansprechpartner statt einer Ticket-Nummer.</p>
-        </div>
-        <div class="vorteil">
-          <span class="vorteil__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/><path d="M8 9h8M8 13h5"/></svg></span>
-          <h3>Gefunden, auch in ChatGPT</h3>
-          <p>Kunden fragen zunehmend KI-Assistenten nach Betrieben in der Nähe. Ich richte Ihre Website so ein, dass sie dort verstanden und empfohlen werden kann.</p>
-        </div>
-        <div class="vorteil">
-          <span class="vorteil__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></span>
-          <h3>Rundum betreut</h3>
-          <p>Auf Wunsch übernehme ich nach dem Livegang Technik, Updates, Backups und kleine Änderungen zum festen Monatspreis.</p>
-        </div>
-        <div class="vorteil">
-          <span class="vorteil__icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></span>
-          <h3>Individuell statt Baukasten</h3>
-          <p>Jede Website wird für Ihren Betrieb gestaltet. Sie läuft schnell auf Smartphone, Tablet und Desktop und gehört am Ende Ihnen.</p>
-        </div>
-      </div>
+      <ul class="hero__fakten">
+        <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5"/></svg>Festpreis vor Projektstart</li>
+        <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5"/></svg>Kompakt-Paket in 7 Werktagen</li>
+        <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5"/></svg>Beratung vor Ort</li>
+      </ul>
     </div>
   </section>
 
   <!-- ============ Preise ============ -->
   <section class="abschnitt" id="preise">
     <div class="huelle">
-      <div class="abschnitt__kopf">
+      <div class="abschnitt__kopf abschnitt__kopf--mitte">
         <span class="augenbraue">Preise</span>
         <h2>Drei Pakete. Ein Festpreis.</h2>
         <p class="einleitung">Sie wissen vor dem Start, was Ihre Website kostet. Nach dem kostenlosen Erstgespräch erhalten Sie ein schriftliches Angebot mit Festpreis und Livegang-Termin.</p>
+      </div>
+
+      <div class="aktion" id="sonderaktion">
+        <p class="aktion__zahl"><small>bis zu</small>−50 %</p>
+        <div class="aktion__text">
+          <strong>Sonderaktion für die ersten 5 Kunden</strong>
+          <p>Gandert. Webdesign ist neu am Start. Deshalb erhalten die ersten 5 Kunden bis zu 50 % Rabatt auf die Pakete Kompakt, Komplett und Online-Shop. Die genaue Höhe steht in Ihrem Festpreis-Angebot. Die Betreuungs-Abos sind von der Aktion ausgenommen.</p>
+        </div>
+        <a class="knopf knopf--voll" href="#kontakt" data-paket="Sonderaktion">Platz sichern</a>
       </div>
 
       <div class="pakete">
@@ -233,6 +124,7 @@
             <span class="paket__stufe">Kompakt</span>
             <h3 class="paket__name">Unternehmensseite</h3>
             <p class="paket__preis">ab 890 €</p>
+            <span class="paket__rabatt">Sonderaktion: bis zu 50 % Rabatt</span>
             <p class="paket__rahmen">Bis 3 Seiten · 7 Werktage</p>
             <p class="paket__text">Der saubere Auftritt für Betriebe, die vor allem gefunden und angerufen werden wollen.</p>
           </div>
@@ -251,6 +143,7 @@
             <span class="paket__stufe">Komplett</span>
             <h3 class="paket__name">Unternehmensseite</h3>
             <p class="paket__preis">ab 1.690 €</p>
+            <span class="paket__rabatt">Sonderaktion: bis zu 50 % Rabatt</span>
             <p class="paket__rahmen">Bis 8 Seiten · max. 14 Werktage</p>
             <p class="paket__text">Für Betriebe, die ihre Leistungen ausführlich zeigen und Vertrauen aufbauen wollen.</p>
           </div>
@@ -269,6 +162,7 @@
             <span class="paket__stufe">Shop</span>
             <h3 class="paket__name">Online-Shop</h3>
             <p class="paket__preis">ab 2.490 €</p>
+            <span class="paket__rabatt">Sonderaktion: bis zu 50 % Rabatt</span>
             <p class="paket__rahmen">Zeitplan nach Absprache</p>
             <p class="paket__text">Verkaufen im Netz: Sortiment, Bezahlung und Versand vollständig eingerichtet.</p>
           </div>
@@ -283,7 +177,7 @@
       </div>
 
       <!-- ============ Betreuung ============ -->
-      <div class="abschnitt__kopf zwischenkopf" id="betreuung">
+      <div class="abschnitt__kopf abschnitt__kopf--mitte zwischenkopf" id="betreuung">
         <span class="augenbraue">Betreuung im Abo</span>
         <h2>Sicher, aktuell und sichtbar.</h2>
         <p class="einleitung">Zu jedem Paket buchbar: Sie kümmern sich um Ihr Geschäft, ich mich um Ihre Website. Updates, Änderungen und Ihre Sichtbarkeit bei Google und KI-Assistenten zum festen Monatspreis.</p>
@@ -338,14 +232,14 @@
         </article>
       </div>
 
-      <p class="fussnote">Mindestlaufzeit 6 Monate, danach monatlich kündbar. Für Online-Shops zzgl. 30 € pro Monat. Konkrete Platzierungen bei Google und KI-Assistenten können nicht garantiert werden. Alle Preise sind Endpreise; gemäß § 19 UStG wird keine Umsatzsteuer berechnet.</p>
+      <p class="fussnote" style="margin-inline:auto;text-align:center">Mindestlaufzeit 6 Monate, danach monatlich kündbar. Für Online-Shops zzgl. 30 € pro Monat. Konkrete Platzierungen bei Google und KI-Assistenten können nicht garantiert werden. Alle Preise sind Endpreise; gemäß § 19 UStG wird keine Umsatzsteuer berechnet.</p>
     </div>
   </section>
 
   <!-- ============ Ablauf ============ -->
   <section class="abschnitt abschnitt--flaeche" id="ablauf">
     <div class="huelle">
-      <div class="abschnitt__kopf">
+      <div class="abschnitt__kopf abschnitt__kopf--mitte">
         <span class="augenbraue">Ablauf</span>
         <h2>Vom ersten Gespräch bis zur fertigen Website.</h2>
         <p class="einleitung">Sie liefern Texte, Bilder und Ihr Wissen über den Betrieb. Um Gestaltung, Technik und Rechtliches kümmere ich mich.</p>
@@ -407,7 +301,7 @@
         <h2>Ich bin Jeremy Gandert.</h2>
         <p>Ich baue Websites für Betriebe aus Hamburg und dem Umland, von Stelle im Landkreis Harburg aus. Mein Antrieb ist einfach: Viele gute Betriebe verlieren Kunden, weil sie im Netz kaum zu finden sind oder ihre Website veraltet ist. Das lässt sich heute schnell und bezahlbar ändern.</p>
         <p>Ich arbeite mit modernen KI-Werkzeugen. Dadurch bin ich schneller als eine klassische Agentur und kann faire Festpreise anbieten, ohne an der Qualität zu sparen. Jede Website prüfe ich vor dem Livegang selbst: auf dem Smartphone, bei der Ladezeit und bei den Rechtstexten.</p>
-        <p class="hinweis"><strong>Neu am Start:</strong> Gandert. Webdesign ist ein junges Unternehmen. Für die ersten Projekte biete ich einen Einführungspreis an, wenn Sie mir im Gegenzug eine ehrliche Bewertung und die Nennung als Referenz erlauben. Sprechen Sie mich darauf an.</p>
+        <p class="hinweis"><strong>Neu am Start:</strong> Gandert. Webdesign ist ein junges Unternehmen. Als Sonderaktion erhalten die ersten 5 Kunden bis zu 50 % Rabatt auf die Pakete Kompakt, Komplett und Online-Shop. <a href="#sonderaktion">Mehr zur Aktion</a></p>
       </div>
     </div>
   </section>
@@ -415,7 +309,7 @@
   <!-- ============ FAQ ============ -->
   <section class="abschnitt abschnitt--flaeche" id="fragen">
     <div class="huelle">
-      <div class="abschnitt__kopf">
+      <div class="abschnitt__kopf abschnitt__kopf--mitte">
         <span class="augenbraue">Häufige Fragen</span>
         <h2>Was Kunden vorher wissen wollen.</h2>
       </div>
@@ -424,6 +318,10 @@
         <details class="frage">
           <summary>Was kostet meine Website genau?<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
           <p class="frage__antwort">Die Pakete beginnen bei 890 €. Nach dem kostenlosen Erstgespräch erhalten Sie ein schriftliches Angebot mit Festpreis. Dieser Preis gilt, auch wenn die Umsetzung länger dauert als geplant.</p>
+        </details>
+        <details class="frage">
+          <summary>Wie funktioniert die Sonderaktion?<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
+          <p class="frage__antwort">Die ersten 5 Kunden erhalten bis zu 50 % Rabatt auf die Pakete Kompakt, Komplett und Online-Shop. Wie hoch der Rabatt in Ihrem Fall ist, steht verbindlich in Ihrem Festpreis-Angebot. Die Betreuungs-Abos sind ausgenommen. Erwähnen Sie die Aktion einfach bei Ihrer Anfrage.</p>
         </details>
         <details class="frage">
           <summary>Wie lange dauert es, bis meine Website online ist?<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
@@ -463,7 +361,7 @@
         <ul class="kontakt__wege">
           <li>
             <span class="rund"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg></span>
-            <div><small>Telefon</small><a href="tel:[TELEFON]">[TELEFON]</a></div>
+            <div><small>Telefon</small><a href="tel:+4915253252268">0152 53252268</a></div>
           </li>
           <li>
             <span class="rund"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
@@ -497,6 +395,7 @@
           <label for="f-paket">Interesse an</label>
           <select id="f-paket" name="paket">
             <option value="Noch offen">Noch offen, bitte beraten Sie mich</option>
+            <option value="Sonderaktion">Sonderaktion für die ersten 5 Kunden</option>
             <option value="Kompakt">Paket Kompakt (ab 890 €)</option>
             <option value="Komplett">Paket Komplett (ab 1.690 €)</option>
             <option value="Online-Shop">Online-Shop (ab 2.490 €)</option>
@@ -548,7 +447,7 @@
         <p>Websites zum Festpreis für Betriebe in Hamburg und im Landkreis Harburg.</p>
       </div>
       <ul class="fuss__links" aria-label="Seiten">
-        <li><a href="#leistungen">Leistungen</a></li>
+        <li><a href="#top">Start</a></li>
         <li><a href="#preise">Preise</a></li>
         <li><a href="#ablauf">Ablauf</a></li>
         <li><a href="#kontakt">Kontakt</a></li>
@@ -563,6 +462,7 @@
   </div>
 </footer>
 
+<script src="assets/linien.js" defer></script>
 <script src="assets/main.js" defer></script>
 </body>
 </html>
