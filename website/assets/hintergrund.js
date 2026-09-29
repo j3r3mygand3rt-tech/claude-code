@@ -43,10 +43,13 @@
     "",
     // Farben: Grund #070b14, Himmelblau #38BDF8, Blau #0EA5E9, Königsblau, Petrol
     "  vec3 farbe = vec3(0.027, 0.043, 0.078);",
-    "  farbe += fleck(p, vec2(seite * (0.22 + 0.16 * sin(t * 0.11)), 0.30 + 0.22 * cos(t * 0.09)), 0.42, vec3(0.22, 0.74, 0.97) * 0.30);",
-    "  farbe += fleck(p, vec2(seite * (0.72 + 0.18 * cos(t * 0.07)), 0.62 + 0.20 * sin(t * 0.10)), 0.48, vec3(0.05, 0.53, 0.91) * 0.28);",
-    "  farbe += fleck(p, vec2(seite * (0.55 + 0.25 * sin(t * 0.05 + 2.0)), 0.18 + 0.15 * sin(t * 0.08 + 1.0)), 0.40, vec3(0.14, 0.26, 0.78) * 0.26);",
-    "  farbe += fleck(p, vec2(seite * (0.10 + 0.12 * cos(t * 0.06 + 1.5)), 0.85 + 0.12 * cos(t * 0.12)), 0.36, vec3(0.03, 0.45, 0.60) * 0.22);",
+    // Jeder Fleck wandert quer über die ganze Breite (etwas über den Rand hinaus)
+    // und wieder zurück. Eigene Dauer und eigener Startpunkt je Fleck, damit
+    // sie nie im Gleichtakt laufen: ca. 38 s, 52 s, 67 s und 83 s pro Durchgang.
+    "  farbe += fleck(p, vec2(seite * (0.5 + 0.62 * sin(t * 0.165)),        0.32 + 0.14 * sin(t * 0.090 + 1.0)), 0.42, vec3(0.22, 0.74, 0.97) * 0.30);",
+    "  farbe += fleck(p, vec2(seite * (0.5 + 0.62 * sin(t * 0.121 + 2.4)),  0.64 + 0.12 * cos(t * 0.070)),       0.48, vec3(0.05, 0.53, 0.91) * 0.28);",
+    "  farbe += fleck(p, vec2(seite * (0.5 + 0.62 * cos(t * 0.094 + 4.1)),  0.18 + 0.12 * sin(t * 0.110 + 2.0)), 0.40, vec3(0.14, 0.26, 0.78) * 0.26);",
+    "  farbe += fleck(p, vec2(seite * (0.5 + 0.62 * sin(t * 0.076 + 5.3)),  0.86 + 0.10 * cos(t * 0.080 + 0.5)), 0.36, vec3(0.03, 0.45, 0.60) * 0.22);",
     "",
     // Leichtes Rauschen verhindert Farbstufen in den Verläufen
     "  farbe += (rauschen(gl_FragCoord.xy + t) - 0.5) / 255.0 * 2.0;",
@@ -108,7 +111,7 @@
   var ruhig = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)");
 
   function zeichnen(sekunden) {
-    gl.uniform1f(uZeit, versatz + sekunden * 1.5);
+    gl.uniform1f(uZeit, versatz + sekunden);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
   }
 
