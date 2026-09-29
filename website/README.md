@@ -14,6 +14,7 @@ Statische Website (HTML, CSS, ein kleines JavaScript) plus ein PHP-Skript für d
 | `assets/hintergrund.js` | Animierter Hintergrund: weiche, langsam wandernde Farbverläufe in den Logo-Blautönen. Reines WebGL ohne fremde Server, geringe Rechenauflösung, hält bei „Bewegung reduzieren“ und in inaktiven Tabs an |
 | `assets/fonts/` | DM Serif Display und Manrope, **lokal** eingebunden |
 | `llms.txt` | Kurzfassung für KI-Assistenten wie ChatGPT |
+| `site.webmanifest`, `assets/apple-touch-icon.png`, `assets/icon-*.png` | App-Symbol für „Zum Home-Bildschirm“ auf iPhone, iPad und Android |
 | `robots.txt`, `sitemap.xml` | Für Suchmaschinen |
 | `.htaccess` | Leitet auf HTTPS um, setzt Sicherheits-Header und Cache-Zeiten |
 
@@ -44,6 +45,20 @@ Den kompletten Inhalt dieses Ordners (auch die versteckte Datei `.htaccess`) per
 2. Das Formular einmal selbst ausfüllen, die Mail muss ankommen.
 3. Die Seite auf dem eigenen Smartphone durchklicken.
 4. In der Google Search Console die `sitemap.xml` einreichen.
+
+## Geräte
+
+Getestet ohne seitliches Scrollen und mit Tippflächen von mindestens 44 px auf:
+kleines Android (320 px), iPhone SE, iPhone 14, iPhone 14 Pro Max, iPhone quer, Pixel 7, Galaxy S9+,
+iPad Mini (hoch und quer), iPad 7. Gen., iPad Pro 11 (hoch und quer), Galaxy Tab S4, Laptop 1366 px, Desktop 1920 px.
+
+- Bis 1040 px Breite (Handys, iPads hochkant, iPad Mini quer) gibt es das aufklappbare Menü, darüber das normale Menü.
+- Notch und Kameraloch im Querformat werden berücksichtigt (`viewport-fit=cover` mit Sicherheitsabständen).
+- Formularfelder haben 16 px Schrift, damit iOS beim Antippen nicht hineinzoomt.
+- Hover-Effekte nur bei Maus, damit auf Touch-Geräten nichts „hängen“ bleibt.
+- Ohne WebGL (sehr alte Geräte) erscheint statt der Animation ein ruhiger Farbverlauf.
+
+Vor dem Livegang trotzdem einmal auf dem eigenen iPhone und einem Android-Gerät durchklicken; die Tests oben laufen in einem simulierten Browser.
 
 ## Gestaltung
 

@@ -25,6 +25,15 @@
       if (e.target.closest("a")) menueSchliessen(false);
     });
 
+    document.addEventListener("click", function (e) {
+      if (!e.target.closest(".nav")) menueSchliessen(false);
+    });
+
+    // Beim Wechsel auf die breite Ansicht (z. B. iPad drehen) Menü zurücksetzen
+    window.addEventListener("resize", function () {
+      if (window.innerWidth > 1040) menueSchliessen(false);
+    });
+
     menue.addEventListener("keydown", function (e) {
       if (e.key === "Escape") menueSchliessen(true);
     });

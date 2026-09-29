@@ -157,13 +157,15 @@
   zeichnen(0);   // Standbild, auch bei reduzierter Bewegung
   starten();
 
-  window.addEventListener("resize", function () { groesse(); zeichnen(letzteSekunden); });
+  function neuMessen() { groesse(); zeichnen(letzteSekunden); }
+  window.addEventListener("resize", neuMessen);
+  window.addEventListener("orientationchange", function () { setTimeout(neuMessen, 250); });
   document.addEventListener("visibilitychange", function () {
     if (document.hidden) anhalten(); else starten();
   });
-  if (ruhig && ruhig.addEventListener) {
-    ruhig.addEventListener("change", function () {
-      if (ruhig.matches) anhalten(); else starten();
-    });
+  function bewegungGeaendert() {
+    if (ruhig.matches) anhalten(); else starten();
   }
+  if (ruhig && ruhig.addEventListener) ruhig.addEventListener("change", bewegungGeaendert);
+  else if (ruhig && ruhig.addListener) ruhig.addListener(bewegungGeaendert); // Safari < 14
 })();

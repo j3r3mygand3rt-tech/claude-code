@@ -70,6 +70,11 @@
 
 html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 body {
   margin: 0;
   background: var(--grund);
@@ -100,6 +105,8 @@ p { margin: 0; }
   max-width: var(--breite);
   margin-inline: auto;
   padding-inline: var(--rand);
+  padding-left: max(var(--rand), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--rand), env(safe-area-inset-right, 0px));
 }
 
 .sprungmarke {
@@ -204,6 +211,9 @@ p { margin: 0; }
 }
 
 .nav__liste a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   color: var(--tinte-mittel);
   text-decoration: none;
   font-size: 0.95rem;
@@ -249,14 +259,20 @@ p { margin: 0; }
   color: var(--auf-akzent);
   border: 1px solid var(--akzent);
 }
-.knopf--voll:hover { background: #7dd3fc; border-color: #7dd3fc; color: var(--auf-akzent); }
+@media (hover: hover) {
+  .knopf--voll:hover { background: #7dd3fc; border-color: #7dd3fc; color: var(--auf-akzent); }
+}
+.knopf--voll:active { background: #7dd3fc; border-color: #7dd3fc; }
 
 .knopf--rahmen {
   background: transparent;
   color: var(--tinte);
   border: 1px solid var(--linie-stark);
 }
-.knopf--rahmen:hover { border-color: var(--akzent); color: var(--tinte); }
+@media (hover: hover) {
+  .knopf--rahmen:hover { border-color: var(--akzent); color: var(--tinte); }
+}
+.knopf--rahmen:active { border-color: var(--akzent); }
 
 .knopf--klein { min-height: 44px; padding: 0.6rem 1.2rem; font-size: 0.92rem; }
 
@@ -314,7 +330,10 @@ body { background: transparent; }
 
 .hintergrund {
   position: fixed;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   z-index: 0;
   pointer-events: none;
   /* Ersatz, falls WebGL fehlt: ruhiger Farbverlauf */
@@ -329,7 +348,8 @@ body { background: transparent; }
   height: 100%;
 }
 
-.kopf, main, .fuss { position: relative; z-index: 1; }
+/* Inhalte liegen über dem Hintergrund; die Kopfleiste bleibt sticky mit eigenem z-index */
+main, .fuss { position: relative; z-index: 1; }
 
 /* Außerhalb des Heros liegt ein dunkler Schleier über den Farbverläufen,
    damit Texte und Preise gut lesbar bleiben. */
@@ -801,6 +821,7 @@ body { background: transparent; }
 }
 .kontakt__wege a,
 .kontakt__wege span.wert { color: var(--tinte); font-weight: 600; text-decoration: none; }
+.kontakt__wege a { display: inline-flex; align-items: center; min-height: 44px; }
 .kontakt__wege a:hover { color: var(--akzent); }
 
 .formular {
@@ -923,7 +944,13 @@ body { background: transparent; }
   margin: 0;
   padding: 0;
 }
-.fuss__links a { color: var(--tinte-mittel); text-decoration: none; }
+.fuss__links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--tinte-mittel);
+  text-decoration: none;
+}
 .fuss__links a:hover { color: var(--akzent); }
 
 .fuss__unten {
@@ -1007,6 +1034,12 @@ body { background: transparent; }
     background: var(--grund);
     border-bottom: 1px solid var(--linie);
     margin-left: 0;
+    max-height: calc(100vh - 76px);
+    max-height: calc(100dvh - 76px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-left: max(var(--rand), env(safe-area-inset-left, 0px));
+    padding-right: max(var(--rand), env(safe-area-inset-right, 0px));
   }
   .nav__menue.ist-offen { display: flex; }
 
